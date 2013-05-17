@@ -1,4 +1,4 @@
 Cybermorphy
 ===========
 
-Twitch Chat Bot
+Twitch Chat Bot designed for SMW Speedrunner
