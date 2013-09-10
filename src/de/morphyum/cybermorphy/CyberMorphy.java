@@ -15,6 +15,7 @@ import org.pircbotx.hooks.events.MessageEvent;
 
 public class CyberMorphy extends ListenerAdapter {
 	int capesmorphy = 0;
+	int soldiersmorphy = 0;
 	int capesdeth = 0;
 	int capesarte = 0;
 	int bonksmorphy = 0;
@@ -27,6 +28,8 @@ public class CyberMorphy extends ListenerAdapter {
 	public void onJoin(JoinEvent event) throws Exception {
 		if (event.getUser().getNick().contentEquals("cybermorphy")) {
 			event.getBot().sendMessage(event.getChannel(), "Yay! I'm back, type !help to get to know me.");
+		} else if (event.getUser().getNick().contentEquals("morphyum")) {
+			event.getBot().sendMessage(event.getChannel(), "The Commander is back praise the gods!");
 		} else if (event.getChannel().getName().contentEquals("#morphyum") && greetmorphy) {
 			event.getBot().sendMessage(event.getChannel(), "Hi " + event.getUser().getNick() + ", Welcome to the stream! <3");
 		} else if (event.getChannel().getName().contentEquals("#artegaomega") && greetarte) {
@@ -113,6 +116,10 @@ public class CyberMorphy extends ListenerAdapter {
 			capes(event);
 		}
 
+		else if ((event.getMessage().toLowerCase()).contains("!soldier")) {
+			soldiers(event);
+		}
+
 		else if ((event.getMessage().toLowerCase()).contains("!bonk")) {
 			bonks(event);
 		}
@@ -141,6 +148,16 @@ public class CyberMorphy extends ListenerAdapter {
 
 		else if (event.getMessage().equalsIgnoreCase("!advertise")) {
 			advertise(event);
+		}
+
+		else if (event.getMessage().toLowerCase().contains("!xcom")) {
+			event.getBot().sendMessage(event.getChannel(), "Morphyum plays XCOM on Classic Difficulty in Ironman mode!");
+			Thread.sleep(1000);
+			event.getBot().sendMessage(event.getChannel(), "Join the Squad!");
+			Thread.sleep(1000);
+			event.getBot().sendMessage(event.getChannel(),
+					"https://docs.google.com/spreadsheet/ccc?key=0AkFJymkKRhIzdHhIWWVaX0xpX3FTNTVFS1pFMFVXRnc&usp=sharing");
+
 		}
 
 		else if (event.getMessage().toLowerCase().contains("!orb")) {
@@ -325,6 +342,38 @@ public class CyberMorphy extends ListenerAdapter {
 		} else {
 			event.getBot().sendMessage(event.getChannel(),
 					"Sadly the cape counter isn't available in this channel, if u own this channel please contact Morphyum to make it available");
+		}
+
+	}
+
+	private void soldiers(MessageEvent event) {
+		if (event.getChannel().getName().contentEquals("#morphyum")) {
+			if (event.getChannel().isOp(event.getUser())) {
+				if (event.getMessage().equalsIgnoreCase("!soldiers reset")) {
+					this.soldiersmorphy = 0;
+					event.getBot().sendMessage(event.getChannel(), "Soldier Counter reset!");
+				} else if (event.getMessage().equalsIgnoreCase("!soldiers +")) {
+					soldiersmorphy++;
+					event.getBot().sendMessage(event.getChannel(), "Morphyum lost " + soldiersmorphy + " Soldiers in this Run!");
+				}
+
+				else if (event.getMessage().equalsIgnoreCase("!soldiers -")) {
+					if (soldiersmorphy != 0) {
+						soldiersmorphy--;
+						event.getBot().sendMessage(event.getChannel(), "Morphyum lost " + soldiersmorphy + " Soldiers in this Run!");
+					} else {
+						event.getBot().sendMessage(event.getChannel(), "-1 soldiers? that doesnt make any sense, lets stop at 0 Kappa");
+					}
+				} else {
+					event.getBot().sendMessage(event.getChannel(),
+							"Morphyum lost " + soldiersmorphy + " Soldiers in this Run! To increase or decrease number type !soldiers [+/-]");
+				}
+			} else {
+				event.getBot().sendMessage(event.getChannel(), "Morphyum lost " + soldiersmorphy + " Soldiers in this Run!");
+			}
+		} else {
+			event.getBot().sendMessage(event.getChannel(),
+					"Sadly the soldier counter isn't available in this channel, if u own this channel please contact Morphyum to make it available");
 		}
 
 	}
