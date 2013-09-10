@@ -28,6 +28,8 @@ public class CyberMorphy extends ListenerAdapter {
 	public void onJoin(JoinEvent event) throws Exception {
 		if (event.getUser().getNick().contentEquals("cybermorphy")) {
 			event.getBot().sendMessage(event.getChannel(), "Yay! I'm back, type !help to get to know me.");
+		} else if (event.getUser().getNick().contentEquals("morphyum")) {
+			event.getBot().sendMessage(event.getChannel(), "The Commander is back praise the gods!");
 		} else if (event.getChannel().getName().contentEquals("#morphyum") && greetmorphy) {
 			event.getBot().sendMessage(event.getChannel(), "Hi " + event.getUser().getNick() + ", Welcome to the stream! <3");
 		} else if (event.getChannel().getName().contentEquals("#artegaomega") && greetarte) {
@@ -351,7 +353,7 @@ public class CyberMorphy extends ListenerAdapter {
 					this.soldiersmorphy = 0;
 					event.getBot().sendMessage(event.getChannel(), "Soldier Counter reset!");
 				} else if (event.getMessage().equalsIgnoreCase("!soldiers +")) {
-					capesmorphy++;
+					soldiersmorphy++;
 					event.getBot().sendMessage(event.getChannel(), "Morphyum lost " + soldiersmorphy + " Soldiers in this Run!");
 				}
 
