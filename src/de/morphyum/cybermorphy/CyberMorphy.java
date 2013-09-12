@@ -366,7 +366,7 @@ public class CyberMorphy extends ListenerAdapter {
 					}
 				} else {
 					event.getBot().sendMessage(event.getChannel(),
-							"Morphyum lost " + soldiersmorphy + " Soldiers in this Run! To increase or decrease number type !capes [+/-]");
+							"Morphyum lost " + soldiersmorphy + " Soldiers in this Run! To increase or decrease number type !soldiers [+/-]");
 				}
 			} else {
 				event.getBot().sendMessage(event.getChannel(), "Morphyum lost " + soldiersmorphy + " Soldiers in this Run!");
