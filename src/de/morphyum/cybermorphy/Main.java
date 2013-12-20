@@ -12,7 +12,7 @@ public class Main {
 		bot.setAutoReconnect(true);
 		bot.setAutoReconnectChannels(true);
 
-		bot.connect("cybermorphy.jtvirc.com", 6667, "nudelsuppe");
+		bot.connect("irc.twitch.tv", 6667, "oauth:fbjpmnege3g0aw4ffv802rgkle1q9vo");
 		Thread.sleep(1000);
 
 		bot.joinChannel("#cybermorphy");
@@ -28,9 +28,6 @@ public class Main {
 		Thread.sleep(1000);
 
 		bot.joinChannel("#mimiheart9");
-		Thread.sleep(1000);
-		
-		bot.joinChannel("#suidt");
 		Thread.sleep(1000);
 		
 		PircBotX bot2 = new PircBotX();

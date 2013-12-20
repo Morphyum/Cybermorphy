@@ -22,7 +22,7 @@ public class CyberMorphy extends ListenerAdapter {
 	int orbsgotarte = 0;
 	int orbsfailedarte = 0;
 
-	boolean greetmorphy = true;
+	boolean greetmorphy = false;
 	boolean greetarte = false;
 
 	public void onJoin(JoinEvent event) throws Exception {
