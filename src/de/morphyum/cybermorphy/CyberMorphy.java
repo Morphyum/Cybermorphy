@@ -42,6 +42,14 @@ public class CyberMorphy extends ListenerAdapter {
 		if (event.getMessage().equalsIgnoreCase("!bestmanever")) {
 			event.getBot().sendMessage(event.getChannel(), "Its Bloody the man of the man!");
 		}
+		
+		else if ((event.getMessage().toLowerCase()).contains("!truman")) {
+			event.getBot().sendMessage(event.getChannel(), "maple sitory");
+		}
+		
+		else if ((event.getMessage().toLowerCase()).contains("!booring")) {
+			event.getBot().sendMessage(event.getChannel(), " \"wow, nice boo ring shitbag\" xpaco5 (2013)");
+		}
 
 		else if ((event.getMessage().toLowerCase()).contains("teh urn")) {
 			event.getBot().sendMessage(event.getChannel(), "It's TEH URN!!");
@@ -125,7 +133,7 @@ public class CyberMorphy extends ListenerAdapter {
 		}
 
 		else if (event.getMessage().equalsIgnoreCase("!race")) {
-			event.getBot().sendMessage(event.getChannel(), "To see all contestent of a race go to http://speedrunslive.com/races/#!/live !");
+			event.getBot().sendMessage(event.getChannel(), "To see all contestent of a race go to http://speedrunslive.com/races/ !");
 		}
 
 		else if (event.getMessage().equalsIgnoreCase("!help")) {

@@ -27,6 +27,12 @@ public class Main {
 		bot.joinChannel("#artegaomega");
 		Thread.sleep(1000);
 
+		bot.joinChannel("#truman");
+		Thread.sleep(1000);
+		
+		bot.joinChannel("#xpaco5");
+		Thread.sleep(1000);
+		
 		bot.joinChannel("#mimiheart9");
 		Thread.sleep(1000);
 		
