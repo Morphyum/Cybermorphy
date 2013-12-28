@@ -34,13 +34,13 @@ public class CyberMorphy extends ListenerAdapter {
 			event.getBot().sendMessage(event.getChannel(), "Yay! I'm back, type !help to get to know me.");
 		} else if (event.getUser().getNick().contentEquals("morphyum")) {
 			event.getBot().sendMessage(event.getChannel(), "My Creator is back, good time to praise him or make requests :P");
-			
+
 		} else if (event.getChannel().getName().contentEquals("#morphyum") && greetmorphy) {
 			event.getBot().sendMessage(event.getChannel(), "Hi " + event.getUser().getNick() + ", Welcome to the stream! <3");
-			
+
 		} else if (event.getChannel().getName().contentEquals("#artegaomega") && greetarte) {
 			event.getBot().sendMessage(event.getChannel(), "Hi " + event.getUser().getNick() + ", Welcome to the stream! <3");
-			
+
 		} else if (event.getChannel().getName().contentEquals("#truman") && greettruman) {
 			event.getBot().sendMessage(event.getChannel(), "Hi " + event.getUser().getNick() + ", Welcome to the stream! <3");
 		}
@@ -54,6 +54,14 @@ public class CyberMorphy extends ListenerAdapter {
 
 		else if ((event.getMessage().toLowerCase()).contains("!truman")) {
 			event.getBot().sendMessage(event.getChannel(), "maple sitory");
+		}
+		
+		else if ((event.getMessage().toLowerCase()).contains("!categories")) {
+			event.getBot().sendMessage(event.getChannel(), showSMWCats());
+		}
+
+		else if ((event.getMessage().toLowerCase()).contains("!leaderboard")) {
+			event.getBot().sendMessage(event.getChannel(), "You can find the SMW leaaderboard here: http://deanyd.net/smw/index.php?title=Leaderboards");
 		}
 
 		else if ((event.getMessage().toLowerCase()).contains("!booring")) {
@@ -70,12 +78,18 @@ public class CyberMorphy extends ListenerAdapter {
 
 		else if ((event.getMessage().toLowerCase()).contains("what it is?")) {
 			event.getBot().sendMessage(event.getChannel(), "That's what it do!");
-		} else if (event.getMessage().equalsIgnoreCase("!smwwiki")) {
+		}
+
+		else if (event.getMessage().equalsIgnoreCase("!smwwiki")) {
 			event.getBot().sendMessage(event.getChannel(), "http://www.smwwiki.com");
-		} else if (event.getMessage().equalsIgnoreCase("!japanese")) {
+		}
+
+		else if (event.getMessage().equalsIgnoreCase("!japanese")) {
 			event.getBot().sendMessage(event.getChannel(),
 					"The japanese version has less signs for the text, which makes it 20.8 seconds faster over the whole run.");
-		} else if (event.getMessage().equalsIgnoreCase("!wingdupe")) {
+		}
+
+		else if (event.getMessage().equalsIgnoreCase("!wingdupe")) {
 			event.getBot().sendMessage(event.getChannel(),
 					"Blocks can be duplicated to the side, upwards, or upwards-diagonally by throwing a item at it while Mario is close to it.");
 			Thread.sleep(3000);
@@ -83,7 +97,9 @@ public class CyberMorphy extends ListenerAdapter {
 					.sendMessage(
 							event.getChannel(),
 							"When turn blocks are duplicated over half of a dragon coin and Mario collects the remaining half, the duplicated turn block will change into a key/wings/balloon/shell block based on horizontal position. And the Wings end the Level if collected with Yoshi!");
-		} else if ((event.getMessage().toLowerCase()).contains("where am i")) {
+		}
+
+		else if ((event.getMessage().toLowerCase()).contains("where am i")) {
 			event.getBot().sendMessage(event.getChannel(), "In a chat, ofcourse.");
 		}
 
@@ -498,6 +514,18 @@ public class CyberMorphy extends ListenerAdapter {
 			e.printStackTrace();
 		}
 		return result;
+	}
+
+	private String showSMWCats() {
+		String categories = getHTML("http://www.deanyd.net/smw/api.php?action=parse&page=leaderboards&format=json&prop=sections");
+		JSONObject jsonobject2 = new JSONObject(categories);
+		jsonobject2 = jsonobject2.getJSONObject(("parse"));
+		JSONArray sections = jsonobject2.getJSONArray("sections");
+		String catList = "";
+		for (int h = 0; h < sections.length(); h++) {
+			catList += sections.getJSONObject(h).getString("line").toLowerCase() + " --- ";
+		}
+		return catList;
 	}
 
 	private String getWR(String category) {
