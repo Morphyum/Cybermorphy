@@ -42,11 +42,11 @@ public class CyberMorphy extends ListenerAdapter {
 		if (event.getMessage().equalsIgnoreCase("!bestmanever")) {
 			event.getBot().sendMessage(event.getChannel(), "Its Bloody the man of the man!");
 		}
-		
+
 		else if ((event.getMessage().toLowerCase()).contains("!truman")) {
 			event.getBot().sendMessage(event.getChannel(), "maple sitory");
 		}
-		
+
 		else if ((event.getMessage().toLowerCase()).contains("!booring")) {
 			event.getBot().sendMessage(event.getChannel(), " \"wow, nice boo ring shitbag\" xpaco5 (2013)");
 		}
@@ -86,11 +86,12 @@ public class CyberMorphy extends ListenerAdapter {
 			event.getBot().sendMessage(event.getChannel(), getWR(event.getMessage().toLowerCase().substring(4)));
 		}
 
-		else if ((event.getMessage().toLowerCase()).contains("http://www.youtube.com/watch?v=")) {
+		else if ((event.getMessage().toLowerCase()).contains("http://www.youtube.com/watch?v=")
+				|| (event.getMessage().toLowerCase()).contains("https://www.youtube.com/watch?v=")) {
 
 			String[] texte = event.getMessage().split(" ");
 			for (int i = 0; i < texte.length; i++) {
-				if (texte[i].toLowerCase().contains("http://www.youtube.com/watch?v=")) {
+				if (texte[i].toLowerCase().contains("http://www.youtube.com/watch?v=") || texte[i].toLowerCase().contains("https://www.youtube.com/watch?v=")) {
 					System.out.println(texte[i]);
 					String link = texte[i];
 					event.getBot().sendMessage(event.getChannel(), getYoutube(link));
@@ -190,7 +191,12 @@ public class CyberMorphy extends ListenerAdapter {
 	}
 
 	private static String getYoutube(String link) {
-		String id = link.substring(31);
+		String id;
+		if (link.substring(4, 5).toLowerCase().equals("s")) {
+			id = link.substring(32);
+		} else {
+			id = link.substring(31);
+		}
 		String video = getHTML("https://www.googleapis.com/youtube/v3/videos?part=snippet&id=" + id + "&key=AIzaSyDOqZtT01vX5FyWTPzalHIfq-wbOXIju2w");
 		JSONObject jsonobject = new JSONObject(video);
 		JSONArray items = jsonobject.getJSONArray("items");
