@@ -14,25 +14,34 @@ import org.pircbotx.hooks.events.JoinEvent;
 import org.pircbotx.hooks.events.MessageEvent;
 
 public class CyberMorphy extends ListenerAdapter {
-	int capesmorphy = 0;
 	int soldiersmorphy = 0;
+
+	int capesmorphy = 0;
 	int capesdeth = 0;
 	int capesarte = 0;
+
 	int bonksmorphy = 0;
+
 	int orbsgotarte = 0;
 	int orbsfailedarte = 0;
 
 	boolean greetmorphy = false;
 	boolean greetarte = false;
+	boolean greettruman = false;
 
 	public void onJoin(JoinEvent event) throws Exception {
 		if (event.getUser().getNick().contentEquals("cybermorphy")) {
 			event.getBot().sendMessage(event.getChannel(), "Yay! I'm back, type !help to get to know me.");
 		} else if (event.getUser().getNick().contentEquals("morphyum")) {
-			event.getBot().sendMessage(event.getChannel(), "The Commander is back praise the gods!");
+			event.getBot().sendMessage(event.getChannel(), "My Creator is back, good time to praise him or make requests :P");
+			
 		} else if (event.getChannel().getName().contentEquals("#morphyum") && greetmorphy) {
 			event.getBot().sendMessage(event.getChannel(), "Hi " + event.getUser().getNick() + ", Welcome to the stream! <3");
+			
 		} else if (event.getChannel().getName().contentEquals("#artegaomega") && greetarte) {
+			event.getBot().sendMessage(event.getChannel(), "Hi " + event.getUser().getNick() + ", Welcome to the stream! <3");
+			
+		} else if (event.getChannel().getName().contentEquals("#truman") && greettruman) {
 			event.getBot().sendMessage(event.getChannel(), "Hi " + event.getUser().getNick() + ", Welcome to the stream! <3");
 		}
 	}
@@ -259,6 +268,14 @@ public class CyberMorphy extends ListenerAdapter {
 					event.getBot().sendMessage(event.getChannel(), "Greeting activated");
 				} else if (event.getMessage().equalsIgnoreCase("!greet off")) {
 					greetarte = false;
+					event.getBot().sendMessage(event.getChannel(), "Greeting deactivated");
+				}
+			} else if (event.getChannel().getName().contentEquals("#truman")) {
+				if (event.getMessage().equalsIgnoreCase("!greet on")) {
+					greettruman = true;
+					event.getBot().sendMessage(event.getChannel(), "Greeting activated");
+				} else if (event.getMessage().equalsIgnoreCase("!greet off")) {
+					greettruman = false;
 					event.getBot().sendMessage(event.getChannel(), "Greeting deactivated");
 				}
 			} else {
