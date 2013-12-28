@@ -165,12 +165,12 @@ public class CyberMorphy extends ListenerAdapter {
 		else if (event.getMessage().equalsIgnoreCase("!help")) {
 			event.getBot().sendMessage(event.getChannel(), "http://pastebin.com/9LxubXzA");
 
-		} else if (event.getMessage().toLowerCase().contains("!season")) {
-			if (event.getMessage().equalsIgnoreCase("!season")) {
-				season(event);
-				event.getBot().sendMessage(event.getChannel(), "The Rest of the Leaderboard can be found here: http://speedrunslive.com/races/seasons/1/1/4");
+		} else if (event.getMessage().toLowerCase().contains("!srlstandings")) {
+			if (event.getMessage().equalsIgnoreCase("!srlstandings")) {
+				srlStandings(event);
+				event.getBot().sendMessage(event.getChannel(), "The Rest of the Leaderboard can be found here: http://speedrunslive.com/races/game/#!/smw/1");
 			} else {
-				seasonsearch(event, event.getMessage().toLowerCase().substring(8));
+				srlStandingsSearch(event, event.getMessage().toLowerCase().substring(14));
 			}
 		}
 
@@ -231,11 +231,9 @@ public class CyberMorphy extends ListenerAdapter {
 
 	}
 
-	private void season(MessageEvent event) {
-		String leaderboard = getHTML("http://api.speedrunslive.com/seasongoal/4?callback=renderLeaderboard");
-		leaderboard = leaderboard.substring(18, leaderboard.length() - 1);
+	private void srlStandings(MessageEvent event) {
+		String leaderboard = getHTML("http://api.speedrunslive.com:81/leaderboard/smw");
 		JSONObject jsonobj = new JSONObject(leaderboard);
-		jsonobj = jsonobj.getJSONObject("season_goal");
 		JSONArray jsonarray = jsonobj.getJSONArray("leaders");
 		String leader = "";
 		for (int i = 0; i < 10; i++) {
@@ -244,11 +242,9 @@ public class CyberMorphy extends ListenerAdapter {
 		event.getBot().sendMessage(event.getChannel(), leader);
 	}
 
-	private void seasonsearch(MessageEvent event, String name) {
-		String leaderboard = getHTML("http://api.speedrunslive.com/seasongoal/4?callback=renderLeaderboard");
-		leaderboard = leaderboard.substring(18, leaderboard.length() - 1);
+	private void srlStandingsSearch(MessageEvent event, String name) {
+		String leaderboard = getHTML("http://api.speedrunslive.com:81/leaderboard/smw");
 		JSONObject jsonobj = new JSONObject(leaderboard);
-		jsonobj = jsonobj.getJSONObject("season_goal");
 		JSONArray jsonarray = jsonobj.getJSONArray("leaders");
 		Boolean match = false;
 		for (int i = 0; i < jsonarray.length(); i++) {
