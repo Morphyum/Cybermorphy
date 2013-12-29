@@ -14,40 +14,25 @@ import org.pircbotx.hooks.events.JoinEvent;
 import org.pircbotx.hooks.events.MessageEvent;
 
 public class CyberMorphy extends ListenerAdapter {
-	int soldiersmorphy = 0;
-
-	int capesmorphy = 0;
-	int capesdeth = 0;
-	int capesarte = 0;
-
-	int bonksmorphy = 0;
-
-	int orbsgotarte = 0;
-	int orbsfailedarte = 0;
-
-	boolean greetmorphy = false;
-	boolean greetarte = false;
-	boolean greettruman = false;
+	int soldiers = 0;
+	int capes = 0;
+	int bonks = 0;
+	int orbsgot = 0;
+	int orbsfailed = 0;
+	boolean greetings = false;
+	String advertisement = "No advertisement set yet, use !advertise set [MESSAGE] to set one";
 
 	public void onJoin(JoinEvent event) throws Exception {
 		if (event.getUser().getNick().contentEquals("cybermorphy")) {
 			event.getBot().sendMessage(event.getChannel(), "Yay! I'm back, type !help to get to know me.");
 		} else if (event.getUser().getNick().contentEquals("morphyum")) {
 			event.getBot().sendMessage(event.getChannel(), "My Creator is back, good time to praise him or make requests :P");
-
-		} else if (event.getChannel().getName().contentEquals("#morphyum") && greetmorphy) {
-			event.getBot().sendMessage(event.getChannel(), "Hi " + event.getUser().getNick() + ", Welcome to the stream! <3");
-
-		} else if (event.getChannel().getName().contentEquals("#artegaomega") && greetarte) {
-			event.getBot().sendMessage(event.getChannel(), "Hi " + event.getUser().getNick() + ", Welcome to the stream! <3");
-
-		} else if (event.getChannel().getName().contentEquals("#truman") && greettruman) {
+		} else if (greetings) {
 			event.getBot().sendMessage(event.getChannel(), "Hi " + event.getUser().getNick() + ", Welcome to the stream! <3");
 		}
 	}
 
 	public void onMessage(MessageEvent event) throws Exception {
-
 		if (event.getMessage().equalsIgnoreCase("!bestmanever")) {
 			event.getBot().sendMessage(event.getChannel(), "Its Bloody the man of the man!");
 		}
@@ -55,7 +40,7 @@ public class CyberMorphy extends ListenerAdapter {
 		else if ((event.getMessage().toLowerCase()).contains("!truman")) {
 			event.getBot().sendMessage(event.getChannel(), "maple sitory");
 		}
-		
+
 		else if ((event.getMessage().toLowerCase()).contains("!categories")) {
 			event.getBot().sendMessage(event.getChannel(), showSMWCats());
 		}
@@ -127,7 +112,7 @@ public class CyberMorphy extends ListenerAdapter {
 		else if ((event.getMessage().toLowerCase()).contains("!goto") && event.getUser().getNick().equalsIgnoreCase("morphyum")) {
 			String[] message = event.getMessage().toLowerCase().split(" ");
 			String channel = message[1];
-			event.getBot().joinChannel("#" + channel);
+			Main.newBot(channel);
 		}
 
 		else if ((event.getMessage().toLowerCase()).contains("!pb")) {
@@ -175,23 +160,15 @@ public class CyberMorphy extends ListenerAdapter {
 		}
 
 		else if (event.getMessage().equalsIgnoreCase("!join")) {
-
-			event.getBot().joinChannel("#" + event.getUser().getNick());
-
+			Main.newBot(event.getUser().getNick());
 		}
 
-		else if (event.getMessage().equalsIgnoreCase("!advertise")) {
-			advertise(event);
-		}
-
-		else if (event.getMessage().toLowerCase().contains("!xcom")) {
-			event.getBot().sendMessage(event.getChannel(), "Morphyum plays XCOM on Classic Difficulty in Ironman mode!");
-			Thread.sleep(1000);
-			event.getBot().sendMessage(event.getChannel(), "Join the Squad!");
-			Thread.sleep(1000);
-			event.getBot().sendMessage(event.getChannel(),
-					"https://docs.google.com/spreadsheet/ccc?key=0AkFJymkKRhIzdHhIWWVaX0xpX3FTNTVFS1pFMFVXRnc&usp=sharing");
-
+		else if (event.getMessage().toLowerCase().contains("!advertise")) {
+			if (event.getMessage().equalsIgnoreCase("!advertise")) {
+				event.getBot().sendMessage(event.getChannel(), advertisement);
+			} else if(event.getMessage().toLowerCase().contains("!advertise set")) {
+				advertisement = event.getMessage().substring(15);
+			}
 		}
 
 		else if (event.getMessage().toLowerCase().contains("!orb")) {
@@ -210,6 +187,8 @@ public class CyberMorphy extends ListenerAdapter {
 			if (event.getChannel().isOp(event.getUser()) || event.getUser().getNick().equalsIgnoreCase("morphyum")) {
 				event.getBot().sendMessage(event.getChannel(), "Fine i leave :(");
 				event.getBot().partChannel(event.getChannel());
+				event.getBot().disconnect();
+				event.getBot().shutdown(true);
 			}
 		}
 		Thread.sleep(3000);
@@ -266,228 +245,124 @@ public class CyberMorphy extends ListenerAdapter {
 	private void greeting(MessageEvent event) {
 
 		if (event.getChannel().isOp(event.getUser())) {
-			if (event.getChannel().getName().contentEquals("#morphyum")) {
-				if (event.getMessage().equalsIgnoreCase("!greet on")) {
-					greetmorphy = true;
-					event.getBot().sendMessage(event.getChannel(), "Greeting activated");
-				} else if (event.getMessage().equalsIgnoreCase("!greet off")) {
-					greetmorphy = false;
-					event.getBot().sendMessage(event.getChannel(), "Greeting deactivated");
-				}
-			} else if (event.getChannel().getName().contentEquals("#artegaomega")) {
-				if (event.getMessage().equalsIgnoreCase("!greet on")) {
-					greetarte = true;
-					event.getBot().sendMessage(event.getChannel(), "Greeting activated");
-				} else if (event.getMessage().equalsIgnoreCase("!greet off")) {
-					greetarte = false;
-					event.getBot().sendMessage(event.getChannel(), "Greeting deactivated");
-				}
-			} else if (event.getChannel().getName().contentEquals("#truman")) {
-				if (event.getMessage().equalsIgnoreCase("!greet on")) {
-					greettruman = true;
-					event.getBot().sendMessage(event.getChannel(), "Greeting activated");
-				} else if (event.getMessage().equalsIgnoreCase("!greet off")) {
-					greettruman = false;
-					event.getBot().sendMessage(event.getChannel(), "Greeting deactivated");
-				}
-			} else {
-				event.getBot().sendMessage(event.getChannel(),
-						"Sadly the greeting isn't available in this channel, if u own this channel please contact Morphyum to make it available");
+			if (event.getMessage().equalsIgnoreCase("!greet on")) {
+				greetings = true;
+				event.getBot().sendMessage(event.getChannel(), "Greeting activated");
+			} else if (event.getMessage().equalsIgnoreCase("!greet off")) {
+				greetings = false;
+				event.getBot().sendMessage(event.getChannel(), "Greeting deactivated");
 			}
-		}
-
-	}
-
-	private void advertise(MessageEvent event) {
-		if (event.getChannel().getName().contentEquals("#morphyum")) {
-			event.getBot().sendMessage(event.getChannel(), "Morphyum's Youtube Channel is http://www.youtube.com/TheMorphyum");
-			event.getBot().sendMessage(event.getChannel(), "Morphyum's Facebook Site is http://www.facebook.com/TheMorphyum");
-			event.getBot().sendMessage(event.getChannel(), "Morphyum's Twitter Page is https://twitter.com/morphyum");
-		} else {
-			event.getBot().sendMessage(event.getChannel(), "I never heared of another page owned by this streamer. If he has one tell Morphyum about it!");
 		}
 
 	}
 
 	private void capes(MessageEvent event) {
-		if (event.getChannel().getName().contentEquals("#morphyum")) {
-			if (event.getChannel().isOp(event.getUser())) {
-				if (event.getMessage().equalsIgnoreCase("!capes reset")) {
-					this.capesmorphy = 0;
-					event.getBot().sendMessage(event.getChannel(), "Cape Counter reset!");
-				} else if (event.getMessage().equalsIgnoreCase("!capes +")) {
-					capesmorphy++;
-					event.getBot().sendMessage(event.getChannel(), "Morphyum lost " + capesmorphy + " Capes in this Run!");
-				}
-
-				else if (event.getMessage().equalsIgnoreCase("!capes -")) {
-					if (capesmorphy != 0) {
-						capesmorphy--;
-						event.getBot().sendMessage(event.getChannel(), "Morphyum lost " + capesmorphy + " Capes in this Run!");
-					} else {
-						event.getBot().sendMessage(event.getChannel(), "-1 Capes? that doesnt make any sense, lets stop at 0 Kappa");
-					}
-				} else {
-					event.getBot().sendMessage(event.getChannel(),
-							"Morphyum lost " + capesmorphy + " Capes in this Run! To increase or decrease number type !capes [+/-]");
-				}
-			} else {
-				event.getBot().sendMessage(event.getChannel(), "Morphyum lost " + capesmorphy + " Capes in this Run!");
+		if (event.getChannel().isOp(event.getUser())) {
+			if (event.getMessage().equalsIgnoreCase("!capes reset")) {
+				this.capes = 0;
+				event.getBot().sendMessage(event.getChannel(), "Cape Counter reset!");
+			} else if (event.getMessage().equalsIgnoreCase("!capes +")) {
+				capes++;
+				event.getBot().sendMessage(event.getChannel(), event.getChannel().getName().substring(1) + " lost " + capes + " Capes in this Run!");
 			}
-		} else if (event.getChannel().getName().contentEquals("#dethwing")) {
-			if (event.getChannel().isOp(event.getUser())) {
-				if (event.getMessage().equalsIgnoreCase("!capes reset")) {
-					this.capesdeth = 0;
-					event.getBot().sendMessage(event.getChannel(), "Cape Counter reset!");
-				} else if (event.getMessage().equalsIgnoreCase("!capes +")) {
-					capesdeth++;
-					event.getBot().sendMessage(event.getChannel(), "Dethwing lost " + capesdeth + " Capes in this Run!");
-				}
 
-				else if (event.getMessage().equalsIgnoreCase("!capes -")) {
-					if (capesdeth != 0) {
-						capesdeth--;
-						event.getBot().sendMessage(event.getChannel(), "Dethwing lost " + capesdeth + " Capes in this Run!");
-					} else {
-						event.getBot().sendMessage(event.getChannel(), "-1 capes? that doesnt make any sense, lets stop at 0 Kappa");
-					}
+			else if (event.getMessage().equalsIgnoreCase("!capes -")) {
+				if (capes != 0) {
+					capes--;
+					event.getBot().sendMessage(event.getChannel(), event.getChannel().getName().substring(1) + " lost " + capes + " Capes in this Run!");
 				} else {
-					event.getBot().sendMessage(event.getChannel(),
-							"Dethwing lost " + capesdeth + " Capes in this Run! To increase or decrease number type !capes [+/-]");
+					event.getBot().sendMessage(event.getChannel(), "-1 Capes? that doesnt make any sense, lets stop at 0 Kappa");
 				}
 			} else {
-				event.getBot().sendMessage(event.getChannel(), "Dethwing lost " + capesdeth + " Capes in this Run!");
-			}
-		} else if (event.getChannel().getName().contentEquals("#artegaomega")) {
-			if (event.getChannel().isOp(event.getUser())) {
-				if (event.getMessage().equalsIgnoreCase("!capes reset")) {
-					this.capesarte = 0;
-					event.getBot().sendMessage(event.getChannel(), "Cape Counter reset!");
-				} else if (event.getMessage().equalsIgnoreCase("!capes +")) {
-					capesarte++;
-					event.getBot().sendMessage(event.getChannel(), "Artega lost " + capesarte + " Capes in this Run!");
-				}
-
-				else if (event.getMessage().equalsIgnoreCase("!capes -")) {
-					if (capesarte != 0) {
-						capesarte--;
-						event.getBot().sendMessage(event.getChannel(), "Artega lost " + capesarte + " Capes in this Run!");
-					} else {
-						event.getBot().sendMessage(event.getChannel(), "-1 capes? that doesnt make any sense, lets stop at 0 Kappa");
-					}
-				} else {
-					event.getBot().sendMessage(event.getChannel(),
-							"Artega lost " + capesarte + " Capes in this Run! To increase or decrease number type !capes [+/-]");
-				}
-			} else {
-				event.getBot().sendMessage(event.getChannel(), "Artega lost " + capesdeth + " Capes in this Run!");
+				event.getBot().sendMessage(event.getChannel(),
+						event.getChannel().getName().substring(1) + " lost " + capes + " Capes in this Run! To increase or decrease number type !capes [+/-]");
 			}
 		} else {
-			event.getBot().sendMessage(event.getChannel(),
-					"Sadly the cape counter isn't available in this channel, if u own this channel please contact Morphyum to make it available");
+			event.getBot().sendMessage(event.getChannel(), event.getChannel().getName().substring(1) + " lost " + capes + " Capes in this Run!");
 		}
-
 	}
 
 	private void soldiers(MessageEvent event) {
-		if (event.getChannel().getName().contentEquals("#morphyum")) {
-			if (event.getChannel().isOp(event.getUser())) {
-				if (event.getMessage().equalsIgnoreCase("!soldiers reset")) {
-					this.soldiersmorphy = 0;
-					event.getBot().sendMessage(event.getChannel(), "Soldier Counter reset!");
-				} else if (event.getMessage().equalsIgnoreCase("!soldiers +")) {
-					soldiersmorphy++;
-					event.getBot().sendMessage(event.getChannel(), "Morphyum lost " + soldiersmorphy + " Soldiers in this Run!");
-				}
+		if (event.getChannel().isOp(event.getUser())) {
+			if (event.getMessage().equalsIgnoreCase("!soldiers reset")) {
+				this.soldiers = 0;
+				event.getBot().sendMessage(event.getChannel(), "Soldier Counter reset!");
+			} else if (event.getMessage().equalsIgnoreCase("!soldiers +")) {
+				soldiers++;
+				event.getBot().sendMessage(event.getChannel(), event.getChannel().getName().substring(1) + " lost " + soldiers + " Soldiers in this Run!");
+			}
 
-				else if (event.getMessage().equalsIgnoreCase("!soldiers -")) {
-					if (soldiersmorphy != 0) {
-						soldiersmorphy--;
-						event.getBot().sendMessage(event.getChannel(), "Morphyum lost " + soldiersmorphy + " Soldiers in this Run!");
-					} else {
-						event.getBot().sendMessage(event.getChannel(), "-1 soldiers? that doesnt make any sense, lets stop at 0 Kappa");
-					}
+			else if (event.getMessage().equalsIgnoreCase("!soldiers -")) {
+				if (soldiers != 0) {
+					soldiers--;
+					event.getBot().sendMessage(event.getChannel(), event.getChannel().getName().substring(1) + " lost " + soldiers + " Soldiers in this Run!");
 				} else {
-					event.getBot().sendMessage(event.getChannel(),
-							"Morphyum lost " + soldiersmorphy + " Soldiers in this Run! To increase or decrease number type !soldiers [+/-]");
+					event.getBot().sendMessage(event.getChannel(), "-1 soldiers? that doesnt make any sense, lets stop at 0 Kappa");
 				}
 			} else {
-				event.getBot().sendMessage(event.getChannel(), "Morphyum lost " + soldiersmorphy + " Soldiers in this Run!");
+				event.getBot().sendMessage(event.getChannel(),
+						event.getChannel().getName().substring(1) + " lost " + soldiers + " Soldiers in this Run! To increase or decrease number type !soldiers [+/-]");
 			}
 		} else {
-			event.getBot().sendMessage(event.getChannel(),
-					"Sadly the soldier counter isn't available in this channel, if u own this channel please contact Morphyum to make it available");
+			event.getBot().sendMessage(event.getChannel(), event.getChannel().getName().substring(1) + " lost " + soldiers + " Soldiers in this Run!");
 		}
-
 	}
 
 	private void bonks(MessageEvent event) {
-		if (event.getChannel().getName().contentEquals("#morphyum")) {
-			if (event.getChannel().isOp(event.getUser())) {
-				if (event.getMessage().equalsIgnoreCase("!bonks reset")) {
-					this.bonksmorphy = 0;
-					event.getBot().sendMessage(event.getChannel(), "BONK Counter reset!");
-				} else if (event.getMessage().equalsIgnoreCase("!bonks +")) {
-					bonksmorphy++;
-					event.getBot().sendMessage(event.getChannel(), "Morphyum BONKed " + bonksmorphy + " times in this Run!");
-				}
+		if (event.getChannel().isOp(event.getUser())) {
+			if (event.getMessage().equalsIgnoreCase("!bonks reset")) {
+				this.bonks = 0;
+				event.getBot().sendMessage(event.getChannel(), "BONK Counter reset!");
+			} else if (event.getMessage().equalsIgnoreCase("!bonks +")) {
+				bonks++;
+				event.getBot().sendMessage(event.getChannel(), event.getChannel().getName().substring(1) + " BONKed " + bonks + " times in this Run!");
+			}
 
-				else if (event.getMessage().equalsIgnoreCase("!bonks -")) {
-					if (bonksmorphy != 0) {
-						bonksmorphy--;
-						event.getBot().sendMessage(event.getChannel(), "Morphyum BONKed " + bonksmorphy + " times in this Run!");
-					} else {
-						event.getBot().sendMessage(event.getChannel(), "-1 BONKs? that doesnt make any sense, lets stop at 0 Kappa");
-					}
+			else if (event.getMessage().equalsIgnoreCase("!bonks -")) {
+				if (bonks != 0) {
+					bonks--;
+					event.getBot().sendMessage(event.getChannel(), event.getChannel().getName().substring(1) + " BONKed " + bonks + " times in this Run!");
 				} else {
-					event.getBot().sendMessage(event.getChannel(),
-							"Morphyum BONKed " + bonksmorphy + " times in this Run! To increase or decrease number type !bonks [+/-]");
+					event.getBot().sendMessage(event.getChannel(), "-1 BONKs? that doesnt make any sense, lets stop at 0 Kappa");
 				}
 			} else {
-				event.getBot().sendMessage(event.getChannel(), "Morphyum BONKed " + bonksmorphy + " times in this Run!");
+				event.getBot().sendMessage(event.getChannel(),
+						event.getChannel().getName().substring(1) + " BONKed " + bonks + " times in this Run! To increase or decrease number type !bonks [+/-]");
 			}
 		} else {
-			event.getBot().sendMessage(event.getChannel(),
-					"Sadly the bonk counter isn't available in this channel, if u own this channel please contact Morphyum to make it available");
+			event.getBot().sendMessage(event.getChannel(), event.getChannel().getName().substring(1) + " BONKed " + bonks + " times in this Run!");
 		}
-
 	}
 
 	private void orbcount(MessageEvent event) {
-		if (event.getChannel().getName().contentEquals("#artegaomega")) {
-			if (event.getMessage().equalsIgnoreCase("!orbcount")) {
+		if (event.getMessage().equalsIgnoreCase("!orbcount")) {
+			event.getBot().sendMessage(event.getChannel(),
+					event.getChannel().getName().substring(1) + " got " + orbsgot + " Orbs this session and failed it " + orbsfailed + " times!");
+		}
+		if (event.getChannel().isOp(event.getUser())) {
+			if (event.getMessage().equalsIgnoreCase("!orbreset")) {
+				this.orbsfailed = 0;
+				this.orbsgot = 0;
+				event.getBot().sendMessage(event.getChannel(), "Orb Counter Counter reset!");
+			} else if (event.getMessage().equalsIgnoreCase("!orbgot")) {
+				orbsgot++;
 				event.getBot().sendMessage(event.getChannel(),
-						"ArtegaOmega got " + orbsgotarte + " Orbs this session and failed it " + orbsfailedarte + " times!");
-			}
-			if (event.getChannel().isOp(event.getUser())) {
-				if (event.getMessage().equalsIgnoreCase("!orbreset")) {
-					this.orbsfailedarte = 0;
-					this.orbsgotarte = 0;
-					event.getBot().sendMessage(event.getChannel(), "Orb Counter Counter reset!");
-				} else if (event.getMessage().equalsIgnoreCase("!orbgot")) {
-					orbsgotarte++;
-					event.getBot().sendMessage(event.getChannel(),
-							"ArtegaOmega got " + orbsgotarte + " Orbs this session and failed it " + orbsfailedarte + " times!");
-				} else if (event.getMessage().equalsIgnoreCase("!orbfailed")) {
-					orbsfailedarte++;
-					event.getBot().sendMessage(event.getChannel(),
-							"ArtegaOmega got " + orbsgotarte + " Orbs this session and failed it " + orbsfailedarte + " times!");
+						event.getChannel().getName().substring(1) + " got " + orbsgot + " Orbs this session and failed it " + orbsfailed + " times!");
+			} else if (event.getMessage().equalsIgnoreCase("!orbfailed")) {
+				orbsfailed++;
+				event.getBot().sendMessage(event.getChannel(),
+						event.getChannel().getName().substring(1) + " got " + orbsgot + " Orbs this session and failed it " + orbsfailed + " times!");
 
-				} else {
-					event.getBot().sendMessage(
-							event.getChannel(),
-							"ArtegaOmega got " + orbsgotarte + " Orbs this session and failed it " + orbsfailedarte
-									+ " times! To increase it use [!orbfailed/!orbgot] to reset it use [!orbreset]");
-				}
 			} else {
-				event.getBot().sendMessage(event.getChannel(),
-						"ArtegaOmega got " + orbsgotarte + " Orbs this session and failed it " + orbsfailedarte + " times!");
+				event.getBot().sendMessage(
+						event.getChannel(),
+						event.getChannel().getName().substring(1) + " got " + orbsgot + " Orbs this session and failed it " + orbsfailed
+								+ " times! To increase it use [!orbfailed/!orbgot] to reset it use [!orbreset]");
 			}
 		} else {
 			event.getBot().sendMessage(event.getChannel(),
-					"Sadly the orb counter isn't available in this channel, if u own this channel please contact Morphyum to make it available");
+					event.getChannel().getName().substring(1) + " got " + orbsgot + " Orbs this session and failed it " + orbsfailed + " times!");
 		}
-
 	}
 
 	public static String getHTML(String urlToRead) {
@@ -525,9 +400,6 @@ public class CyberMorphy extends ListenerAdapter {
 	}
 
 	private String getWR(String category) {
-		String name = "ArtegaOmega";
-		name = name.toLowerCase();
-
 		category = category.toLowerCase();
 
 		String categories = getHTML("http://www.deanyd.net/smw/api.php?action=parse&page=leaderboards&format=json&prop=sections");
