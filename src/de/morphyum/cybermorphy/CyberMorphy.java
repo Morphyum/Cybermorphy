@@ -186,8 +186,7 @@ public class CyberMorphy extends ListenerAdapter {
 		else if (event.getMessage().toLowerCase().contains("!leave")) {
 			if (event.getChannel().isOp(event.getUser()) || event.getUser().getNick().equalsIgnoreCase("morphyum")) {
 				event.getBot().sendMessage(event.getChannel(), "Fine i leave :(");
-				event.getBot().partChannel(event.getChannel());
-				event.getBot().disconnect();
+				Thread.sleep(3000);
 				event.getBot().shutdown(true);
 			}
 		}
@@ -461,7 +460,6 @@ public class CyberMorphy extends ListenerAdapter {
 							playerfound = true;
 							return (pbhelp[1].replace("</a", "").trim() + " is currently ranked #" + ranking + " on the " + category
 									+ " Leaderboard with a time of " + pbtext[i + 1].replace("</td>", "").trim());
-
 						}
 					}
 
