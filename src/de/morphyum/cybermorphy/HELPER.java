@@ -87,7 +87,7 @@ public class HELPER {
 		JSONArray sections = jsonobject2.getJSONArray("sections");
 		String catList = "";
 		for (int h = 0; h < sections.length(); h++) {
-			catList += sections.getJSONObject(h).getString("line").toLowerCase() + " --- ";
+			catList += sections.getJSONObject(h).getString("line").toLowerCase() + " | ";
 		}
 		return catList;
 	}
