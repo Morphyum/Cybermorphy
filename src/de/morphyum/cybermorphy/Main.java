@@ -1,22 +1,37 @@
 package de.morphyum.cybermorphy;
 
+import java.util.ArrayList;
+import org.pircbotx.Channel;
 import org.pircbotx.PircBotX;
 
 public class Main {
+	static ArrayList<PircBotX> bots = new ArrayList<PircBotX>();
+
 	public static void main(String[] args) throws Exception {
 		SysTray tray = new SysTray();
-		newBot("cybermorphy");
-		newBot("morphyum");
-		newBot("dethwing");
-		newBot("artegaomega");
-		newBot("truman");
-		newBot("xpaco5");
-		newBot("mimiheart9");
-		
-		srlIrcBot();
+		bots.add(newBot("cybermorphy"));
+		bots.add(newBot("morphyum"));
+		bots.add(newBot("dethwing"));
+		bots.add(newBot("artegaomega"));
+		bots.add(newBot("truman"));
+		bots.add(newBot("xpaco5"));
+		bots.add(newBot("mimiheart9"));
+
+		bots.add(srlIrcBot());
 	}
-	
-	public static void srlIrcBot() throws Exception{
+
+	public static void announce(String message) throws InterruptedException {
+		for (int i = 0; i < bots.size(); i++) {
+			Channel[] channels = (Channel[]) bots.get(i).getChannels()
+					.toArray();
+			for (int j = 0; j < channels.length; j++) {
+				bots.get(i).sendMessage(channels[j], message);
+				Thread.sleep(3000);
+			}
+		}
+	}
+
+	public static PircBotX srlIrcBot() throws Exception {
 		PircBotX bot = new PircBotX();
 		bot.getListenerManager().addListener(new CyberMorphy());
 		bot.setName("cybermorphy");
@@ -27,9 +42,10 @@ public class Main {
 		Thread.sleep(1000);
 		bot.joinChannel("#smwracers");
 		Thread.sleep(1000);
+		return bot;
 	}
-	
-	public static void newBot(String channel) throws Exception{
+
+	public static PircBotX newBot(String channel) throws Exception {
 		PircBotX bot = new PircBotX();
 		bot.getListenerManager().addListener(new CyberMorphy());
 		bot.setName("cybermorphy");
@@ -37,10 +53,12 @@ public class Main {
 		bot.setAutoReconnect(true);
 		bot.setAutoReconnectChannels(true);
 
-		bot.connect("irc.twitch.tv", 6667, "oauth:fbjpmnege3g0aw4ffv802rgkle1q9vo");
+		bot.connect("irc.twitch.tv", 6667,
+				"oauth:fbjpmnege3g0aw4ffv802rgkle1q9vo");
 		Thread.sleep(1000);
 
-		bot.joinChannel("#"+channel);
+		bot.joinChannel("#" + channel);
 		Thread.sleep(1000);
+		return bot;
 	}
 }

@@ -31,6 +31,10 @@ public class CyberMorphy extends ListenerAdapter {
 		else if ((event.getMessage().toLowerCase()).contains("!truman")) {
 			event.getBot().sendMessage(event.getChannel(), "maple sitory");
 		}
+		
+		else if ((event.getMessage().toLowerCase()).contains("!door")) {
+			event.getBot().sendMessage(event.getChannel(), "Fuck you door! FinalBoss!!");
+		}
 
 		else if ((event.getMessage().toLowerCase()).contains("!categories")) {
 			event.getBot().sendMessage(event.getChannel(), HELPER.showSMWCats());
@@ -106,6 +110,12 @@ public class CyberMorphy extends ListenerAdapter {
 			Main.newBot(channel);
 		}
 
+		else if ((event.getMessage().toLowerCase()).contains("!announce") && event.getUser().getNick().equalsIgnoreCase("morphyum")) {
+			String[] message = event.getMessage().toLowerCase().split(" ");
+			String channel = message[1];
+			Main.announce(message[1]);
+		}
+		
 		else if ((event.getMessage().toLowerCase()).contains("!pb")) {
 			String[] message = event.getMessage().toLowerCase().split(" ");
 			String category = "";
