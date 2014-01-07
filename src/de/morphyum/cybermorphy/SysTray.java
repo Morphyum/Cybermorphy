@@ -20,7 +20,6 @@ public class SysTray {
  
  
  public SysTray() {
-  //final GUI gui = gui; 
   icon =  new ImageIcon("cybertrayicon.jpg").getImage();
   
   menu = new PopupMenu("Menü");
