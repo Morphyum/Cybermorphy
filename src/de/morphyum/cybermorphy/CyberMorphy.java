@@ -187,7 +187,7 @@ public class CyberMorphy extends ListenerAdapter {
 		}
 
 		else if (event.getMessage().toLowerCase().contains("!greet")) {
-			greeting(event);
+			event.getBot().sendMessage(event.getChannel(), greeting(event));
 		}
 
 		else if (((event.getMessage().toLowerCase()).contains("!request")) && (event.getChannel().isOp(event.getUser()))) {
@@ -205,18 +205,21 @@ public class CyberMorphy extends ListenerAdapter {
 		Thread.sleep(3000);
 	}
 
-	private void greeting(MessageEvent event) {
+	private String greeting(MessageEvent event) {
 
 		if (event.getChannel().isOp(event.getUser())) {
 			if (event.getMessage().equalsIgnoreCase("!greet on")) {
 				greetings = true;
-				event.getBot().sendMessage(event.getChannel(), "Greeting activated");
+				return "Greeting activated";
 			} else if (event.getMessage().equalsIgnoreCase("!greet off")) {
 				greetings = false;
-				event.getBot().sendMessage(event.getChannel(), "Greeting deactivated");
+				return "Greeting deactivated";
+			} else {
+				return "Wrong Syntax please use !greet [on/off]";
 			}
+		} else {
+			return "Only Mods can (de)activate greetings Kappa";
 		}
-
 	}
 
 	private String capes(MessageEvent event) {
