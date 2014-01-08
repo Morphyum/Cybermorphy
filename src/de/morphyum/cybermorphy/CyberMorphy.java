@@ -11,11 +11,13 @@ public class CyberMorphy extends ListenerAdapter {
 	int orbsgot = 0;
 	int orbsfailed = 0;
 	boolean greetings = false;
+	String streamerName = null;
 	String advertisement = "No advertisement set yet, use !advertise set [MESSAGE] to set one";
 
 	public void onJoin(JoinEvent event) throws Exception {
 		if (event.getUser().getNick().contentEquals("cybermorphy")) {
 			event.getBot().sendMessage(event.getChannel(), "Yay! I'm back, type !help to get to know me.");
+			streamerName = event.getChannel().getName().substring(1);
 		} else if (event.getUser().getNick().contentEquals("morphyum")) {
 			event.getBot().sendMessage(event.getChannel(), "My Creator is back, good time to praise him or make requests :P");
 		} else if (greetings) {
@@ -26,12 +28,15 @@ public class CyberMorphy extends ListenerAdapter {
 	public void onMessage(MessageEvent event) throws Exception {
 		if (event.getMessage().equalsIgnoreCase("!bestmanever")) {
 			event.getBot().sendMessage(event.getChannel(), "Its Bloody the man of the man!");
+		} else if (((event.getMessage().toLowerCase()).contains("!setname")) && (event.getChannel().isOp(event.getUser()))) {
+			streamerName = event.getMessage().substring(9);
+			event.getBot().sendMessage(event.getChannel(), "Ok i will call you " + streamerName + " from now on :)");
 		}
 
 		else if ((event.getMessage().toLowerCase()).contains("!truman")) {
 			event.getBot().sendMessage(event.getChannel(), "maple sitory");
 		}
-		
+
 		else if ((event.getMessage().toLowerCase()).contains("!door")) {
 			event.getBot().sendMessage(event.getChannel(), "Fuck you door! FinalBoss!!");
 		}
@@ -65,8 +70,7 @@ public class CyberMorphy extends ListenerAdapter {
 		}
 
 		else if (event.getMessage().equalsIgnoreCase("!japanese")) {
-			event.getBot().sendMessage(event.getChannel(),
-					"The japanese version has less signs for the text, which makes it 20.8 seconds faster over the whole run.");
+			event.getBot().sendMessage(event.getChannel(), "The japanese version has less signs for the text, which makes it 20.8 seconds faster over the whole run.");
 		}
 
 		else if (event.getMessage().equalsIgnoreCase("!wingdupe")) {
@@ -91,8 +95,7 @@ public class CyberMorphy extends ListenerAdapter {
 			event.getBot().sendMessage(event.getChannel(), HELPER.getWR(event.getMessage().toLowerCase().substring(4)));
 		}
 
-		else if ((event.getMessage().toLowerCase()).contains("http://www.youtube.com/watch?v=")
-				|| (event.getMessage().toLowerCase()).contains("https://www.youtube.com/watch?v=")) {
+		else if ((event.getMessage().toLowerCase()).contains("http://www.youtube.com/watch?v=") || (event.getMessage().toLowerCase()).contains("https://www.youtube.com/watch?v=")) {
 
 			String[] texte = event.getMessage().split(" ");
 			for (int i = 0; i < texte.length; i++) {
@@ -115,7 +118,7 @@ public class CyberMorphy extends ListenerAdapter {
 			String channel = message[1];
 			Main.announce(message[1]);
 		}
-		
+
 		else if ((event.getMessage().toLowerCase()).contains("!pb")) {
 			String[] message = event.getMessage().toLowerCase().split(" ");
 			String category = "";
@@ -133,15 +136,16 @@ public class CyberMorphy extends ListenerAdapter {
 		}
 
 		else if ((event.getMessage().toLowerCase()).contains("!cape")) {
-			capes(event);
+			event.getBot().sendMessage(event.getChannel(), capes(event));
+
 		}
 
 		else if ((event.getMessage().toLowerCase()).contains("!soldier")) {
-			soldiers(event);
+			event.getBot().sendMessage(event.getChannel(), soldiers(event));
 		}
 
 		else if ((event.getMessage().toLowerCase()).contains("!bonk")) {
-			bonks(event);
+			event.getBot().sendMessage(event.getChannel(), bonks(event));
 		}
 
 		else if (event.getMessage().equalsIgnoreCase("!race")) {
@@ -153,10 +157,10 @@ public class CyberMorphy extends ListenerAdapter {
 
 		} else if (event.getMessage().toLowerCase().contains("!srlstandings")) {
 			if (event.getMessage().equalsIgnoreCase("!srlstandings")) {
-				HELPER.srlStandings(event);
+				event.getBot().sendMessage(event.getChannel(), HELPER.srlStandings(event));
 				event.getBot().sendMessage(event.getChannel(), "The Rest of the Leaderboard can be found here: http://speedrunslive.com/races/game/#!/smw/1");
 			} else {
-				HELPER.srlStandingsSearch(event, event.getMessage().toLowerCase().substring(14));
+				event.getBot().sendMessage(event.getChannel(), HELPER.srlStandingsSearch(event, event.getMessage().toLowerCase().substring(14)));
 			}
 		}
 
@@ -167,8 +171,9 @@ public class CyberMorphy extends ListenerAdapter {
 		else if (event.getMessage().toLowerCase().contains("!advertise")) {
 			if (event.getMessage().equalsIgnoreCase("!advertise")) {
 				event.getBot().sendMessage(event.getChannel(), advertisement);
-			} else if(event.getMessage().toLowerCase().contains("!advertise set")) {
+			} else if ((event.getMessage().toLowerCase().contains("!advertise set")) && (event.getChannel().isOp(event.getUser()))) {
 				advertisement = event.getMessage().substring(15);
+				HELPER.srlStandingsSearch(event, "advertisement set to: " + advertisement);
 			}
 		}
 
@@ -176,22 +181,23 @@ public class CyberMorphy extends ListenerAdapter {
 			if (event.getMessage().equalsIgnoreCase("!orb")) {
 				event.getBot().sendMessage(event.getChannel(), "OrbOrbOrbOrbOrb!");
 			} else {
-				orbcount(event);
+				event.getBot().sendMessage(event.getChannel(), orbcount(event));
+
 			}
 		}
 
 		else if (event.getMessage().toLowerCase().contains("!greet")) {
 			greeting(event);
 		}
-		
-		else if ( ( (event.getMessage().toLowerCase()).contains("!request") ) && ( event.getChannel().isOp(event.getUser()) ) ) {
+
+		else if (((event.getMessage().toLowerCase()).contains("!request")) && (event.getChannel().isOp(event.getUser()))) {
 			HELPER.sendMail(event.getMessage().substring(9));
 			event.getBot().sendMessage(event.getChannel(), "Thanks for your request!");
 		}
 
 		else if (event.getMessage().toLowerCase().contains("!leave")) {
 			if (event.getChannel().isOp(event.getUser()) || event.getUser().getNick().equalsIgnoreCase("morphyum")) {
-				event.getBot().sendMessage(event.getChannel(), "Fine i leave :(");
+				event.getBot().sendMessage(event.getChannel(), "Fine i leave BibleThump");
 				Thread.sleep(3000);
 				event.getBot().shutdown(true);
 			}
@@ -213,121 +219,99 @@ public class CyberMorphy extends ListenerAdapter {
 
 	}
 
-	private void capes(MessageEvent event) {
+	private String capes(MessageEvent event) {
 		if (event.getChannel().isOp(event.getUser())) {
 			if (event.getMessage().equalsIgnoreCase("!capes reset")) {
 				this.capes = 0;
-				event.getBot().sendMessage(event.getChannel(), "Cape Counter reset!");
+				return "Cape Counter reset!";
 			} else if (event.getMessage().equalsIgnoreCase("!capes +")) {
 				capes++;
-				event.getBot().sendMessage(event.getChannel(), event.getChannel().getName().substring(1) + " lost " + capes + " Capes in this Run!");
-			}
-
-			else if (event.getMessage().equalsIgnoreCase("!capes -")) {
+				return streamerName + " lost " + capes + " Capes in this Run!";
+			} else if (event.getMessage().equalsIgnoreCase("!capes -")) {
 				if (capes != 0) {
 					capes--;
-					event.getBot().sendMessage(event.getChannel(), event.getChannel().getName().substring(1) + " lost " + capes + " Capes in this Run!");
+					return streamerName + " lost " + capes + " Capes in this Run!";
 				} else {
-					event.getBot().sendMessage(event.getChannel(), "-1 Capes? that doesnt make any sense, lets stop at 0 Kappa");
+					return "-1 Capes? that doesnt make any sense, lets stop at 0 Kappa";
 				}
 			} else {
-				event.getBot().sendMessage(event.getChannel(),
-						event.getChannel().getName().substring(1) + " lost " + capes + " Capes in this Run! To increase or decrease number type !capes [+/-]");
+				return streamerName + " lost " + capes + " Capes in this Run! To increase or decrease number type !capes [+/-]";
 			}
 		} else {
-			event.getBot().sendMessage(event.getChannel(), event.getChannel().getName().substring(1) + " lost " + capes + " Capes in this Run!");
+			return streamerName + " lost " + capes + " Capes in this Run!";
 		}
 	}
 
-	private void soldiers(MessageEvent event) {
+	private String soldiers(MessageEvent event) {
 		if (event.getChannel().isOp(event.getUser())) {
 			if (event.getMessage().equalsIgnoreCase("!soldiers reset")) {
 				this.soldiers = 0;
-				event.getBot().sendMessage(event.getChannel(), "Soldier Counter reset!");
+				return "Soldier Counter reset!";
 			} else if (event.getMessage().equalsIgnoreCase("!soldiers +")) {
 				soldiers++;
-				event.getBot().sendMessage(event.getChannel(), event.getChannel().getName().substring(1) + " lost " + soldiers + " Soldiers in this Run!");
-			}
-
-			else if (event.getMessage().equalsIgnoreCase("!soldiers -")) {
+				return streamerName + " lost " + soldiers + " Soldiers in this Run!";
+			} else if (event.getMessage().equalsIgnoreCase("!soldiers -")) {
 				if (soldiers != 0) {
 					soldiers--;
-					event.getBot().sendMessage(event.getChannel(), event.getChannel().getName().substring(1) + " lost " + soldiers + " Soldiers in this Run!");
+					return streamerName + " lost " + soldiers + " Soldiers in this Run!";
 				} else {
-					event.getBot().sendMessage(event.getChannel(), "-1 soldiers? that doesnt make any sense, lets stop at 0 Kappa");
+					return "-1 soldiers? that doesnt make any sense, lets stop at 0 Kappa";
 				}
 			} else {
-				event.getBot().sendMessage(event.getChannel(),
-						event.getChannel().getName().substring(1) + " lost " + soldiers + " Soldiers in this Run! To increase or decrease number type !soldiers [+/-]");
+				return streamerName + " lost " + soldiers + " Soldiers in this Run! To increase or decrease number type !soldiers [+/-]";
 			}
 		} else {
-			event.getBot().sendMessage(event.getChannel(), event.getChannel().getName().substring(1) + " lost " + soldiers + " Soldiers in this Run!");
+			return streamerName + " lost " + soldiers + " Soldiers in this Run!";
 		}
 	}
 
-	private void bonks(MessageEvent event) {
+	private String bonks(MessageEvent event) {
 		if (event.getChannel().isOp(event.getUser())) {
 			if (event.getMessage().equalsIgnoreCase("!bonks reset")) {
 				this.bonks = 0;
-				event.getBot().sendMessage(event.getChannel(), "BONK Counter reset!");
+				return "BONK Counter reset!";
 			} else if (event.getMessage().equalsIgnoreCase("!bonks +")) {
 				bonks++;
-				event.getBot().sendMessage(event.getChannel(), event.getChannel().getName().substring(1) + " BONKed " + bonks + " times in this Run!");
+				return streamerName + " BONKed " + bonks + " times in this Run!";
 			}
 
 			else if (event.getMessage().equalsIgnoreCase("!bonks -")) {
 				if (bonks != 0) {
 					bonks--;
-					event.getBot().sendMessage(event.getChannel(), event.getChannel().getName().substring(1) + " BONKed " + bonks + " times in this Run!");
+					return streamerName + " BONKed " + bonks + " times in this Run!";
 				} else {
-					event.getBot().sendMessage(event.getChannel(), "-1 BONKs? that doesnt make any sense, lets stop at 0 Kappa");
+					return "-1 BONKs? that doesnt make any sense, lets stop at 0 Kappa";
 				}
 			} else {
-				event.getBot().sendMessage(event.getChannel(),
-						event.getChannel().getName().substring(1) + " BONKed " + bonks + " times in this Run! To increase or decrease number type !bonks [+/-]");
+				return " BONKed " + bonks + " times in this Run! To increase or decrease number type !bonks [+/-]";
 			}
 		} else {
-			event.getBot().sendMessage(event.getChannel(), event.getChannel().getName().substring(1) + " BONKed " + bonks + " times in this Run!");
+			return streamerName + " BONKed " + bonks + " times in this Run!";
 		}
 	}
 
-	private void orbcount(MessageEvent event) {
+	private String orbcount(MessageEvent event) {
 		if (event.getMessage().equalsIgnoreCase("!orbcount")) {
-			event.getBot().sendMessage(event.getChannel(),
-					event.getChannel().getName().substring(1) + " got " + orbsgot + " Orbs this session and failed it " + orbsfailed + " times!");
+			return streamerName + " got " + orbsgot + " Orbs this session and failed it " + orbsfailed + " times!";
 		}
 		if (event.getChannel().isOp(event.getUser())) {
 			if (event.getMessage().equalsIgnoreCase("!orbreset")) {
 				this.orbsfailed = 0;
 				this.orbsgot = 0;
-				event.getBot().sendMessage(event.getChannel(), "Orb Counter Counter reset!");
+				return "Orb Counter Counter reset!";
 			} else if (event.getMessage().equalsIgnoreCase("!orbgot")) {
 				orbsgot++;
-				event.getBot().sendMessage(event.getChannel(),
-						event.getChannel().getName().substring(1) + " got " + orbsgot + " Orbs this session and failed it " + orbsfailed + " times!");
+				return streamerName + " got " + orbsgot + " Orbs this session and failed it " + orbsfailed + " times!";
 			} else if (event.getMessage().equalsIgnoreCase("!orbfailed")) {
 				orbsfailed++;
-				event.getBot().sendMessage(event.getChannel(),
-						event.getChannel().getName().substring(1) + " got " + orbsgot + " Orbs this session and failed it " + orbsfailed + " times!");
+				return streamerName + " got " + orbsgot + " Orbs this session and failed it " + orbsfailed + " times!";
 
 			} else {
-				event.getBot().sendMessage(
-						event.getChannel(),
-						event.getChannel().getName().substring(1) + " got " + orbsgot + " Orbs this session and failed it " + orbsfailed
-								+ " times! To increase it use [!orbfailed/!orbgot] to reset it use [!orbreset]");
+				return streamerName + " got " + orbsgot + " Orbs this session and failed it " + orbsfailed
+						+ " times! To increase it use [!orbfailed/!orbgot] to reset it use [!orbreset]";
 			}
 		} else {
-			event.getBot().sendMessage(event.getChannel(),
-					event.getChannel().getName().substring(1) + " got " + orbsgot + " Orbs this session and failed it " + orbsfailed + " times!");
+			return streamerName + " got " + orbsgot + " Orbs this session and failed it " + orbsfailed + " times!";
 		}
 	}
-
-	
-
-	
-
-	
-
-	
-
 }
