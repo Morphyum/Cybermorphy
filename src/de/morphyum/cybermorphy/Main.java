@@ -1,12 +1,9 @@
 package de.morphyum.cybermorphy;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import org.pircbotx.Channel;
 import org.pircbotx.PircBotX;
-import org.pircbotx.exception.IrcException;
-import org.pircbotx.exception.NickAlreadyInUseException;
 
 public class Main {
 	static ArrayList<PircBotX> bots = new ArrayList<PircBotX>();
