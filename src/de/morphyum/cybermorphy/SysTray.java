@@ -12,35 +12,34 @@ import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 
 public class SysTray {
- 
- private SystemTray sysTray;
- private Image icon;
- private PopupMenu menu;
- private String tooltip;
- 
- 
- public SysTray() {
-  icon =  new ImageIcon("cybertrayicon.jpg").getImage();
-  
-  menu = new PopupMenu("Menü");
-  
-  MenuItem closeItem = new MenuItem("Beenden");
-  closeItem.addActionListener(new ActionListener() {
-   public void actionPerformed(ActionEvent evt) {
-    System.exit(1);
-   }
-  });
-    
-  menu.add(closeItem);
-  
-  tooltip = "CyberMorphy";
-  
-  sysTray = SystemTray.getSystemTray();
-  TrayIcon tray = new TrayIcon(icon, tooltip, menu);
-  try {
-   sysTray.add(tray);
-  } catch (AWTException e) {
-   e.printStackTrace();
-  }
- }
+
+	private SystemTray sysTray;
+	private Image icon;
+	private PopupMenu menu;
+	private String tooltip;
+
+	public SysTray() {
+		icon = new ImageIcon("cybertrayicon.jpg").getImage();
+
+		menu = new PopupMenu("Menu");
+
+		MenuItem closeItem = new MenuItem("Close");
+		closeItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				System.exit(1);
+			}
+		});
+
+		menu.add(closeItem);
+
+		tooltip = "CyberMorphy";
+
+		sysTray = SystemTray.getSystemTray();
+		TrayIcon tray = new TrayIcon(icon, tooltip, menu);
+		try {
+			sysTray.add(tray);
+		} catch (AWTException e) {
+			e.printStackTrace();
+		}
+	}
 }
