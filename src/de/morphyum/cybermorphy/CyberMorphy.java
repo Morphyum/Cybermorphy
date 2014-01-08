@@ -100,7 +100,6 @@ public class CyberMorphy extends ListenerAdapter {
 			String[] texte = event.getMessage().split(" ");
 			for (int i = 0; i < texte.length; i++) {
 				if (texte[i].toLowerCase().contains("http://www.youtube.com/watch?v=") || texte[i].toLowerCase().contains("https://www.youtube.com/watch?v=")) {
-					System.out.println(texte[i]);
 					String link = texte[i];
 					event.getBot().sendMessage(event.getChannel(), HELPER.getYoutube(link));
 				}
