@@ -34,7 +34,6 @@ public class SrlCyberMorphy extends ListenerAdapter {
 			String[] texte = event.getMessage().split(" ");
 			for (int i = 0; i < texte.length; i++) {
 				if (texte[i].toLowerCase().contains("http://www.youtube.com/watch?v=") || texte[i].toLowerCase().contains("https://www.youtube.com/watch?v=")) {
-					System.out.println(texte[i]);
 					String link = texte[i];
 					event.getBot().sendMessage(event.getChannel(), HELPER.getYoutube(link));
 				}
@@ -54,10 +53,10 @@ public class SrlCyberMorphy extends ListenerAdapter {
 
 		} else if (event.getMessage().toLowerCase().contains("!srlstandings")) {
 			if (event.getMessage().equalsIgnoreCase("!srlstandings")) {
-				HELPER.srlStandings(event);
+				event.getBot().sendMessage(event.getChannel(),HELPER.srlStandings(event));
 				event.getBot().sendMessage(event.getChannel(), "The Rest of the Leaderboard can be found here: http://speedrunslive.com/races/game/#!/smw/1");
 			} else {
-				HELPER.srlStandingsSearch(event, event.getMessage().toLowerCase().substring(14));
+				event.getBot().sendMessage(event.getChannel(),HELPER.srlStandingsSearch(event, event.getMessage().toLowerCase().substring(14)));
 			}
 		}
 
