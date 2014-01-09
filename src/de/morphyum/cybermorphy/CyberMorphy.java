@@ -160,10 +160,10 @@ public class CyberMorphy extends ListenerAdapter {
 
 		} else if (event.getMessage().toLowerCase().contains("!srlstandings")) {
 			if (event.getMessage().equalsIgnoreCase("!srlstandings")) {
-				event.getBot().sendMessage(event.getChannel(), HELPER.srlStandings(event));
+				event.getBot().sendMessage(event.getChannel(), HELPER.srlStandings());
 				event.getBot().sendMessage(event.getChannel(), "The Rest of the Leaderboard can be found here: http://speedrunslive.com/races/game/#!/smw/1");
 			} else {
-				event.getBot().sendMessage(event.getChannel(), HELPER.srlStandingsSearch(event, event.getMessage().toLowerCase().substring(14)));
+				event.getBot().sendMessage(event.getChannel(), HELPER.srlStandingsSearch(event.getMessage().toLowerCase().substring(14)));
 			}
 		}
 
@@ -176,7 +176,7 @@ public class CyberMorphy extends ListenerAdapter {
 				event.getBot().sendMessage(event.getChannel(), advertisement);
 			} else if ((event.getMessage().toLowerCase().contains("!advertise set")) && (event.getChannel().isOp(event.getUser()))) {
 				advertisement = event.getMessage().substring(15);
-				HELPER.srlStandingsSearch(event, "advertisement set to: " + advertisement);
+				HELPER.srlStandingsSearch("advertisement set to: " + advertisement);
 			}
 		}
 		

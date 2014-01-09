@@ -53,10 +53,10 @@ public class SrlCyberMorphy extends ListenerAdapter {
 
 		} else if (event.getMessage().toLowerCase().contains("!srlstandings")) {
 			if (event.getMessage().equalsIgnoreCase("!srlstandings")) {
-				event.getBot().sendMessage(event.getChannel(),HELPER.srlStandings(event));
+				event.getBot().sendMessage(event.getChannel(),HELPER.srlStandings());
 				event.getBot().sendMessage(event.getChannel(), "The Rest of the Leaderboard can be found here: http://speedrunslive.com/races/game/#!/smw/1");
 			} else {
-				event.getBot().sendMessage(event.getChannel(),HELPER.srlStandingsSearch(event, event.getMessage().toLowerCase().substring(14)));
+				event.getBot().sendMessage(event.getChannel(),HELPER.srlStandingsSearch(event.getMessage().toLowerCase().substring(14)));
 			}
 		}
 
