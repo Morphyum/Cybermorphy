@@ -113,8 +113,8 @@ public class CyberMorphy extends ListenerAdapter {
 		}
 
 		else if ((event.getMessage().toLowerCase()).contains("!announce") && event.getUser().getNick().equalsIgnoreCase("morphyum")) {
-			String[] message = event.getMessage().toLowerCase().split(" ");
-			Main.announce(message[1]);
+			String message = event.getMessage().substring(10);
+			Main.announce(message);
 		}
 
 		else if ((event.getMessage().toLowerCase()).contains("!pb")) {

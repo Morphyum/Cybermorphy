@@ -23,9 +23,12 @@ public class Main {
 
 	public static void announce(String message) throws InterruptedException {
 		for (int i = 0; i < bots.size(); i++) {
-			Channel[] channels = (Channel[]) bots.get(i).getChannels().toArray();
-			for (int j = 0; j < channels.length; j++) {
-				bots.get(i).sendMessage(channels[j], message);
+			 ArrayList<Channel> channels = new ArrayList<Channel>();
+			for (int h = 0; h < bots.get(i).getChannels().size(); h++) {
+				channels.add(bots.get(i).getChannels().iterator().next());
+			}
+			for (int j = 0; j < channels.size(); j++) {
+				bots.get(i).sendMessage(channels.get(j), message);
 				Thread.sleep(3000);
 			}
 		}
