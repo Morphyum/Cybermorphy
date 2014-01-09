@@ -4,7 +4,9 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Properties;
+import java.util.Random;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -35,7 +37,18 @@ public class HELPER {
 
 	}
 
-	public static String srlStandings(MessageEvent event) {
+	public static String randomQuote() {
+		ArrayList<String> quotes = new ArrayList<String>();
+		quotes.add("Test1");
+		quotes.add("Test1");
+		
+		Random randomGen = new Random();
+		int randomNum= randomGen.nextInt(quotes.size());
+		
+		return quotes.get(randomNum);
+	}
+	
+	public static String srlStandings() {
 		String leaderboard = getHTML("http://api.speedrunslive.com:81/leaderboard/smw");
 		JSONObject jsonobj = new JSONObject(leaderboard);
 		JSONArray jsonarray = jsonobj.getJSONArray("leaders");
@@ -46,7 +59,7 @@ public class HELPER {
 		return leader;
 	}
 
-	public static String srlStandingsSearch(MessageEvent event, String name) {
+	public static String srlStandingsSearch(String name) {
 		String leaderboard = getHTML("http://api.speedrunslive.com:81/leaderboard/smw");
 		JSONObject jsonobj = new JSONObject(leaderboard);
 		JSONArray jsonarray = jsonobj.getJSONArray("leaders");
