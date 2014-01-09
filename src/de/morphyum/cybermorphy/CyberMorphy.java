@@ -13,6 +13,7 @@ public class CyberMorphy extends ListenerAdapter {
 	boolean greetings = false;
 	String streamerName = null;
 	String advertisement = "No advertisement set yet, use !advertise set [MESSAGE] to set one";
+	String greeting = "Hi |NICK|, Welcome to the stream! <3";
 
 	public void onJoin(JoinEvent event) throws Exception {
 		if (event.getUser().getNick().contentEquals("cybermorphy")) {
@@ -21,7 +22,7 @@ public class CyberMorphy extends ListenerAdapter {
 		} else if (event.getUser().getNick().contentEquals("morphyum")) {
 			event.getBot().sendMessage(event.getChannel(), "My Creator is back, good time to praise him or make requests :P");
 		} else if (greetings) {
-			event.getBot().sendMessage(event.getChannel(), "Hi " + event.getUser().getNick() + ", Welcome to the stream! <3");
+			event.getBot().sendMessage(event.getChannel(), greeting.replace("|NICK|", event.getUser().getNick()));
 		}
 	}
 
@@ -32,7 +33,7 @@ public class CyberMorphy extends ListenerAdapter {
 			streamerName = event.getMessage().substring(9);
 			event.getBot().sendMessage(event.getChannel(), "Ok i will call you " + streamerName + " from now on :)");
 		}
-
+		
 		else if (((event.getMessage().toLowerCase()).contains("!goldenwho?"))||((event.getMessage().toLowerCase()).contains("who is golden"))||((event.getMessage().toLowerCase()).contains("who is go1den")) ) {
 			event.getBot().sendMessage(event.getChannel(), "That's Golden: http://imgur.com/JsdLAXc");
 		}
@@ -155,7 +156,7 @@ public class CyberMorphy extends ListenerAdapter {
 		}
 
 		else if (event.getMessage().equalsIgnoreCase("!help")) {
-			event.getBot().sendMessage(event.getChannel(), "http://pastebin.com/9LxubXzA");
+			event.getBot().sendMessage(event.getChannel(), "This is version 2.2 of CyberMorphy if you dont know this version yet check http://pastebin.com/9LxubXzA for new commands");
 
 		} else if (event.getMessage().toLowerCase().contains("!srlstandings")) {
 			if (event.getMessage().equalsIgnoreCase("!srlstandings")) {
@@ -178,7 +179,7 @@ public class CyberMorphy extends ListenerAdapter {
 				HELPER.srlStandingsSearch(event, "advertisement set to: " + advertisement);
 			}
 		}
-
+		
 		else if (event.getMessage().toLowerCase().contains("!orb")) {
 			if (event.getMessage().equalsIgnoreCase("!orb")) {
 				event.getBot().sendMessage(event.getChannel(), "OrbOrbOrbOrbOrb!");
@@ -216,11 +217,14 @@ public class CyberMorphy extends ListenerAdapter {
 			} else if (event.getMessage().equalsIgnoreCase("!greet off")) {
 				greetings = false;
 				return "Greeting deactivated";
-			} else {
-				return "Wrong Syntax please use !greet [on/off]";
+			} else if (event.getMessage().equalsIgnoreCase("!greet set")) {
+				greeting = event.getMessage().substring(11);
+				return "New greeting will be: " + greeting;
+			}else {
+				return "Wrong Syntax please use !greet [on/off/set [MESSAGE]]";
 			}
 		} else {
-			return "Only Mods can (de)activate greetings Kappa";
+			return "Only Mods can (de)activate or set greetings Kappa";
 		}
 	}
 
@@ -228,7 +232,7 @@ public class CyberMorphy extends ListenerAdapter {
 		if (event.getChannel().isOp(event.getUser())) {
 			if (event.getMessage().equalsIgnoreCase("!capes reset")) {
 				this.capes = 0;
-				return "Cape Counter reset!";
+				return "Cape counter reset!";
 			} else if (event.getMessage().equalsIgnoreCase("!capes +")) {
 				capes++;
 				return streamerName + " lost " + capes + " Capes in this Run!";
