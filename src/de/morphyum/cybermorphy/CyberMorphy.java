@@ -33,15 +33,20 @@ public class CyberMorphy extends ListenerAdapter {
 			streamerName = event.getMessage().substring(9);
 			event.getBot().sendMessage(event.getChannel(), "Ok i will call you " + streamerName + " from now on :)");
 		}
-		
-		else if (((event.getMessage().toLowerCase()).contains("!goldenwho?"))||((event.getMessage().toLowerCase()).contains("who is golden"))||((event.getMessage().toLowerCase()).contains("who is go1den")) ) {
+
+		else if (((event.getMessage().toLowerCase()).contains("!goldenwho?")) || ((event.getMessage().toLowerCase()).contains("who is golden"))
+				|| ((event.getMessage().toLowerCase()).contains("who is go1den"))) {
 			event.getBot().sendMessage(event.getChannel(), "That's Golden: http://imgur.com/JsdLAXc");
 		}
-		
+
 		else if ((event.getMessage().toLowerCase()).contains("!quote")) {
 			event.getBot().sendMessage(event.getChannel(), HELPER.randomQuote());
 		}
-		
+
+		else if ((event.getMessage().toLowerCase()).contains("!casaflip")) {
+			event.getBot().sendMessage(event.getChannel(), "(ﾉಥ益ಥ）ﾉ﻿ ┻━┻");
+		}
+
 		else if ((event.getMessage().toLowerCase()).contains("!truman")) {
 			event.getBot().sendMessage(event.getChannel(), "maple sitory");
 		}
@@ -160,7 +165,8 @@ public class CyberMorphy extends ListenerAdapter {
 		}
 
 		else if (event.getMessage().equalsIgnoreCase("!help")) {
-			event.getBot().sendMessage(event.getChannel(), "This is version 2.2 of CyberMorphy if you dont know this version yet check http://pastebin.com/9LxubXzA for new commands");
+			event.getBot().sendMessage(event.getChannel(),
+					"This is version 2.2 of CyberMorphy if you dont know this version yet check http://pastebin.com/9LxubXzA for new commands");
 
 		} else if (event.getMessage().toLowerCase().contains("!srlstandings")) {
 			if (event.getMessage().equalsIgnoreCase("!srlstandings")) {
@@ -183,7 +189,7 @@ public class CyberMorphy extends ListenerAdapter {
 				HELPER.srlStandingsSearch("advertisement set to: " + advertisement);
 			}
 		}
-		
+
 		else if (event.getMessage().toLowerCase().contains("!orb")) {
 			if (event.getMessage().equalsIgnoreCase("!orb")) {
 				event.getBot().sendMessage(event.getChannel(), "OrbOrbOrbOrbOrb!");
@@ -224,7 +230,7 @@ public class CyberMorphy extends ListenerAdapter {
 			} else if (event.getMessage().equalsIgnoreCase("!greet set")) {
 				greeting = event.getMessage().substring(11);
 				return "New greeting will be: " + greeting;
-			}else {
+			} else {
 				return "Wrong Syntax please use !greet [on/off/set [MESSAGE]]";
 			}
 		} else {

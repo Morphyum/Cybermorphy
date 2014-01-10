@@ -13,7 +13,7 @@ public class SrlCyberMorphy extends ListenerAdapter {
 
 	public void onMessage(MessageEvent event) throws Exception {
 		if ((event.getMessage().toLowerCase()).contains("!leaderboard")) {
-			event.getBot().sendMessage(event.getChannel(), "You can find the SMW leaaderboard here: http://deanyd.net/smw/index.php?title=Leaderboards");
+			event.getBot().sendMessage(event.getChannel(), "You can find the SMW leaderboard here: http://deanyd.net/smw/index.php?title=Leaderboards");
 		}
 
 		else if ((event.getMessage().toLowerCase()).contains("!categories")) {
