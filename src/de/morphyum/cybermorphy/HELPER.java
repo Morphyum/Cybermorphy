@@ -38,14 +38,11 @@ public class HELPER {
 	}
 
 	public static String randomQuote() {
-		ArrayList<String> quotes = new ArrayList<String>();
-		quotes.add("Test1");
-		quotes.add("Test1");
-		
-		Random randomGen = new Random();
-		int randomNum= randomGen.nextInt(quotes.size());
-		
-		return quotes.get(randomNum);
+		String raw = getHTML("http://pastebin.com/raw.php?i=q3HLmbf6");
+		String[] quotes = raw.split("-");
+		Random randGen = new Random();
+		int randNum = randGen.nextInt(quotes.length);
+		return quotes[randNum];
 	}
 	
 	public static String srlStandings() {

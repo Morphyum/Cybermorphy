@@ -24,6 +24,10 @@ public class SrlCyberMorphy extends ListenerAdapter {
 			event.getBot().sendMessage(event.getChannel(), "http://www.smwwiki.com");
 		}
 
+		else if ((event.getMessage().toLowerCase()).contains("!quote")) {
+			event.getBot().sendMessage(event.getChannel(), HELPER.randomQuote());
+		}
+		
 		else if ((event.getMessage().toLowerCase()).contains("!wr")) {
 			event.getBot().sendMessage(event.getChannel(), HELPER.getWR(event.getMessage().toLowerCase().substring(4)));
 		}

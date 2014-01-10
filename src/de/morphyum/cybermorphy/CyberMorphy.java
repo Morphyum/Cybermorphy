@@ -38,6 +38,10 @@ public class CyberMorphy extends ListenerAdapter {
 			event.getBot().sendMessage(event.getChannel(), "That's Golden: http://imgur.com/JsdLAXc");
 		}
 		
+		else if ((event.getMessage().toLowerCase()).contains("!quote")) {
+			event.getBot().sendMessage(event.getChannel(), HELPER.randomQuote());
+		}
+		
 		else if ((event.getMessage().toLowerCase()).contains("!truman")) {
 			event.getBot().sendMessage(event.getChannel(), "maple sitory");
 		}
