@@ -227,7 +227,7 @@ public class CyberMorphy extends ListenerAdapter {
 			} else if (event.getMessage().equalsIgnoreCase("!greet off")) {
 				greetings = false;
 				return "Greeting deactivated";
-			} else if (event.getMessage().equalsIgnoreCase("!greet set")) {
+			} else if (event.getMessage().contains("!greet set")) {
 				greeting = event.getMessage().substring(11);
 				return "New greeting will be: " + greeting;
 			} else {
