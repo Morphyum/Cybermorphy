@@ -13,7 +13,7 @@ public class CyberMorphy extends ListenerAdapter {
 	boolean greetings = false;
 	String streamerName = null;
 	String advertisement = "No advertisement set yet, use !advertise set [MESSAGE] to set one";
-	String greeting = "Hi |NICK|, Welcome to the stream! <3";
+	String greeting = "Hi (NICK), Welcome to the stream! <3";
 
 	public void onJoin(JoinEvent event) throws Exception {
 		if (event.getUser().getNick().contentEquals("cybermorphy")) {
@@ -22,7 +22,7 @@ public class CyberMorphy extends ListenerAdapter {
 		} else if (event.getUser().getNick().contentEquals("morphyum")) {
 			event.getBot().sendMessage(event.getChannel(), "My Creator is back, good time to praise him or make requests :P");
 		} else if (greetings) {
-			event.getBot().sendMessage(event.getChannel(), greeting.replace("|NICK|", event.getUser().getNick()));
+			event.getBot().sendMessage(event.getChannel(), greeting.replace("(NICK)", event.getUser().getNick()));
 		}
 	}
 
