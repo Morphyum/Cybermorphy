@@ -64,9 +64,11 @@ public class Main {
 		for (int i = 0; i < bots.size(); i++) {
 			if (bots.get(i).getChannelsNames().contains(channel)) {
 				empty = false;
+				System.out.println("Join error: Cyber already in: " + channel);
 				break;
 			}
 		}
+		System.out.println("Joined: " + channel);
 		return empty;
 	}
 
