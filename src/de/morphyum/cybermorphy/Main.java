@@ -10,20 +10,18 @@ public class Main {
 
 	public static void main(String[] args) throws Exception {
 		SysTray tray = new SysTray();
-		bots.add(newBot("cybermorphy"));
-		bots.add(newBot("morphyum"));
-		bots.add(newBot("dethwing"));
-		bots.add(newBot("artegaomega"));
-		bots.add(newBot("truman"));
-		bots.add(newBot("xpaco5"));
-		bots.add(newBot("mimiheart9"));
+		String[] channels = { "cybermorphy", "morphyum", "dethwing", "artegaomega", "truman", "xpaco5", "mimiheart9", "rush60002" };
+		for (int i = 0; i < channels.length; i++) {
+			if (isChannelWithoutCyber(channels[i]))
+				bots.add(newBot(channels[i]));
+		}
 
 		bots.add(srlIrcBot());
 	}
 
 	public static void announce(String message) throws InterruptedException {
 		for (int i = 0; i < bots.size(); i++) {
-			 ArrayList<Channel> channels = new ArrayList<Channel>();
+			ArrayList<Channel> channels = new ArrayList<Channel>();
 			for (int h = 0; h < bots.get(i).getChannels().size(); h++) {
 				channels.add(bots.get(i).getChannels().iterator().next());
 			}
@@ -59,6 +57,17 @@ public class Main {
 			}
 		}
 		return bot;
+	}
+
+	public static boolean isChannelWithoutCyber(String channel) {
+		boolean empty = true;
+		for (int i = 0; i < bots.size(); i++) {
+			if (bots.get(i).getChannelsNames().contains(channel)) {
+				empty = false;
+				break;
+			}
+		}
+		return empty;
 	}
 
 	public static PircBotX newBot(String channel) throws Exception {

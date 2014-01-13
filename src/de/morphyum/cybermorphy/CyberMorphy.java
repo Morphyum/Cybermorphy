@@ -123,7 +123,8 @@ public class CyberMorphy extends ListenerAdapter {
 		else if ((event.getMessage().toLowerCase()).contains("!goto") && event.getUser().getNick().equalsIgnoreCase("morphyum")) {
 			String[] message = event.getMessage().toLowerCase().split(" ");
 			String channel = message[1];
-			Main.newBot(channel);
+			if (Main.isChannelWithoutCyber(channel))
+				Main.newBot(channel);
 		}
 
 		else if ((event.getMessage().toLowerCase()).contains("!announce") && event.getUser().getNick().equalsIgnoreCase("morphyum")) {
@@ -166,7 +167,7 @@ public class CyberMorphy extends ListenerAdapter {
 
 		else if (event.getMessage().equalsIgnoreCase("!help")) {
 			event.getBot().sendMessage(event.getChannel(),
-					"This is version 2.2 of CyberMorphy if you dont know this version yet check http://pastebin.com/9LxubXzA for new commands");
+					"This is version 2.3 of CyberMorphy if you dont know this version yet check http://pastebin.com/9LxubXzA for new commands");
 
 		} else if (event.getMessage().toLowerCase().contains("!srlstandings")) {
 			if (event.getMessage().equalsIgnoreCase("!srlstandings")) {
@@ -178,6 +179,7 @@ public class CyberMorphy extends ListenerAdapter {
 		}
 
 		else if (event.getMessage().equalsIgnoreCase("!join")) {
+			if(Main.isChannelWithoutCyber(event.getUser().getNick()))
 			Main.newBot(event.getUser().getNick());
 		}
 
