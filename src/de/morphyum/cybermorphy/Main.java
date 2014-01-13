@@ -10,7 +10,8 @@ public class Main {
 
 	public static void main(String[] args) throws Exception {
 		SysTray tray = new SysTray();
-		String[] channels = { "cybermorphy", "morphyum", "dethwing", "artegaomega", "truman", "xpaco5", "mimiheart9", "rush60002" };
+		String[] channels = { "cybermorphy", "morphyum"};
+		//, "dethwing", "artegaomega", "truman", "xpaco5", "mimiheart9", "rush60002" 
 		for (int i = 0; i < channels.length; i++) {
 			if (isChannelWithoutCyber(channels[i]))
 				bots.add(newBot(channels[i]));
@@ -40,19 +41,19 @@ public class Main {
 		bot.setAutoReconnect(true);
 		bot.setAutoReconnectChannels(true);
 		try {
-			bot.connect("irc.speedrunslive.com", 6667);
+			bot.connect("irc2.speedrunslive.com", 6667);
 			Thread.sleep(1000);
 			bot.joinChannel("#smwracers");
 			Thread.sleep(1000);
 		} catch (Exception e) {
-			System.out.println("error while connecting to SRL irc trying irc2");
+			System.out.println("error while connecting to SRL irc2 trying irc");
 			try {
-				bot.connect("irc2.speedrunslive.com", 6667);
+				bot.connect("irc.speedrunslive.com", 6667);
 				Thread.sleep(1000);
 				bot.joinChannel("#smwracers");
 				Thread.sleep(1000);
 			} catch (Exception e2) {
-				System.out.println("error while connecting to SRL irc2 no connection to SRL irc established");
+				System.out.println("error while connecting to SRL irc no connection to SRL irc established");
 				System.out.println("restart cybermorphy to try again");
 			}
 		}
@@ -62,13 +63,12 @@ public class Main {
 	public static boolean isChannelWithoutCyber(String channel) {
 		boolean empty = true;
 		for (int i = 0; i < bots.size(); i++) {
-			if (bots.get(i).getChannelsNames().contains(channel)) {
+			if (bots.get(i).getChannelsNames().contains("#"+channel)) {
 				empty = false;
 				System.out.println("Join error: Cyber already in: " + channel);
 				break;
 			}
 		}
-		System.out.println("Joined: " + channel);
 		return empty;
 	}
 
