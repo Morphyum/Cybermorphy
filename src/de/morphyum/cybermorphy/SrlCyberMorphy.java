@@ -5,10 +5,9 @@ import org.pircbotx.hooks.events.JoinEvent;
 import org.pircbotx.hooks.events.MessageEvent;
 
 public class SrlCyberMorphy extends ListenerAdapter {
-	
 
 	public void onJoin(JoinEvent event) throws Exception {
-		
+
 	}
 
 	public void onMessage(MessageEvent event) throws Exception {
@@ -19,7 +18,7 @@ public class SrlCyberMorphy extends ListenerAdapter {
 		else if ((event.getMessage().toLowerCase()).contains("!categories")) {
 			event.getBot().sendMessage(event.getChannel(), HELPER.showSMWCats());
 		}
-		
+
 		else if (event.getMessage().equalsIgnoreCase("!smwwiki")) {
 			event.getBot().sendMessage(event.getChannel(), "http://www.smwwiki.com");
 		}
@@ -27,7 +26,7 @@ public class SrlCyberMorphy extends ListenerAdapter {
 		else if ((event.getMessage().toLowerCase()).contains("!quote")) {
 			event.getBot().sendMessage(event.getChannel(), HELPER.randomQuote());
 		}
-		
+
 		else if ((event.getMessage().toLowerCase()).contains("!wr")) {
 			event.getBot().sendMessage(event.getChannel(), HELPER.getWR(event.getMessage().toLowerCase().substring(4)));
 		}
@@ -57,16 +56,14 @@ public class SrlCyberMorphy extends ListenerAdapter {
 
 		} else if (event.getMessage().toLowerCase().contains("!srlstandings")) {
 			if (event.getMessage().equalsIgnoreCase("!srlstandings")) {
-				event.getBot().sendMessage(event.getChannel(),HELPER.srlStandings());
+				event.getBot().sendMessage(event.getChannel(), HELPER.srlStandings());
 				event.getBot().sendMessage(event.getChannel(), "The Rest of the Leaderboard can be found here: http://speedrunslive.com/races/game/#!/smw/1");
 			} else {
-				event.getBot().sendMessage(event.getChannel(),HELPER.srlStandingsSearch(event.getMessage().toLowerCase().substring(14)));
+				event.getBot().sendMessage(event.getChannel(), HELPER.srlStandingsSearch(event.getMessage().toLowerCase().substring(14)));
 			}
 		}
 
 		Thread.sleep(3000);
 	}
-
-	
 
 }

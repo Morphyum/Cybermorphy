@@ -44,7 +44,7 @@ public class HELPER {
 		int randNum = randGen.nextInt(quotes.length);
 		return quotes[randNum];
 	}
-	
+
 	public static String srlStandings() {
 		String leaderboard = getHTML("http://api.speedrunslive.com:81/leaderboard/smw");
 		JSONObject jsonobj = new JSONObject(leaderboard);
@@ -64,8 +64,9 @@ public class HELPER {
 		String standings = null;
 		for (int i = 0; i < jsonarray.length(); i++) {
 			if (jsonarray.getJSONObject(i).getString("name").equalsIgnoreCase(name)) {
-				
-				standings = name + " is currently ranked " + "#" + jsonarray.getJSONObject(i).getInt("rank") + " with " + jsonarray.getJSONObject(i).getInt("trueskill") + " Points";
+
+				standings = name + " is currently ranked " + "#" + jsonarray.getJSONObject(i).getInt("rank") + " with "
+						+ jsonarray.getJSONObject(i).getInt("trueskill") + " Points";
 				match = true;
 			}
 		}
@@ -169,8 +170,8 @@ public class HELPER {
 
 						if (pbhelp[1].replace("</a", "").trim().toLowerCase().contentEquals(name)) {
 							playerfound = true;
-							return (pbhelp[1].replace("</a", "").trim() + " is currently ranked #" + ranking + " on the " + category + " Leaderboard with a time of " + pbtext[i + 1]
-									.replace("</td>", "").trim());
+							return (pbhelp[1].replace("</a", "").trim() + " is currently ranked #" + ranking + " on the " + category
+									+ " Leaderboard with a time of " + pbtext[i + 1].replace("</td>", "").trim());
 						}
 					}
 
