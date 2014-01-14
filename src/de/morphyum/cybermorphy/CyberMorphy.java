@@ -206,7 +206,7 @@ public class CyberMorphy extends ListenerAdapter {
 		}
 
 		else if (((event.getMessage().toLowerCase()).contains("!request")) && (event.getChannel().isOp(event.getUser()))) {
-			HELPER.sendMail(event.getMessage().substring(9));
+			HELPER.sendMail(event.getUser().getNick() + ": " + event.getMessage().substring(9));
 			event.getBot().sendMessage(event.getChannel(), "Thanks for your request!");
 		}
 
