@@ -142,6 +142,8 @@ public class HELPER {
 		catfound = false;
 		return "Error";
 	}
+	
+	
 	public static CyberMorphy loadSettings(String channel, CyberMorphy bot) {
 		String path = System.getProperty("user.dir") + "/settings/";
 		String fileText = null;
