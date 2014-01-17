@@ -13,14 +13,14 @@ public class Main {
 
 	public static void main(String[] args) throws Exception {
 		SysTray tray = new SysTray();
-		String[] channels = { "morphyum" };
-//,"cybermorphy" , "dethwing", "artegaomega", "truman", "xpaco5", "mimiheart9", "rush60002"
+		String[] channels = { "morphyum", "cybermorphy", "dethwing", "artegaomega", "truman", "xpaco5", "mimiheart9", "rush60002" };
+
 		for (int i = 0; i < channels.length; i++) {
 			if (isChannelWithoutCyber(channels[i]))
 				bots.add(newBot(channels[i]));
 		}
 
-		//bots.add(srlIrcBot());
+		bots.add(srlIrcBot());
 	}
 
 	public static void announce(String message) throws InterruptedException {
