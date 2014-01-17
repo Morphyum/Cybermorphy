@@ -10,8 +10,8 @@ public class Main {
 
 	public static void main(String[] args) throws Exception {
 		SysTray tray = new SysTray();
-		String[] channels = { "cybermorphy", "morphyum", "dethwing", "artegaomega", "truman", "xpaco5", "mimiheart9", "rush60002" };
-
+		String[] channels = { "morphyum", "dethwing", "artegaomega", "truman", "xpaco5", "mimiheart9", "rush60002" };
+		//"cybermorphy", 
 		for (int i = 0; i < channels.length; i++) {
 			if (isChannelWithoutCyber(channels[i]))
 				bots.add(newBot(channels[i]));
@@ -74,7 +74,7 @@ public class Main {
 
 	public static PircBotX newBot(String channel) throws Exception {
 		PircBotX bot = new PircBotX();
-		bot.getListenerManager().addListener(new CyberMorphy());
+		bot.getListenerManager().addListener(HELPER.loadSettings(channel, new CyberMorphy()));
 		bot.setName("cybermorphy");
 		bot.setVerbose(true);
 		bot.setAutoReconnect(true);
