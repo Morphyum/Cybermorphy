@@ -1,12 +1,16 @@
 package de.morphyum.cybermorphy;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Random;
+import java.util.Scanner;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -18,7 +22,6 @@ import javax.mail.internet.MimeMessage;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.pircbotx.hooks.events.MessageEvent;
 
 public class HELPER {
 	public static String getYoutube(String link) {
@@ -138,6 +141,66 @@ public class HELPER {
 		}
 		catfound = false;
 		return "Error";
+	}
+	public static CyberMorphy loadSettings(String channel, CyberMorphy bot) {
+		String path = System.getProperty("user.dir") + "/settings/";
+		String fileText = null;
+		try {
+			fileText = new Scanner(new File(path + channel + ".json")).useDelimiter("\\A").next();
+		} catch (FileNotFoundException e) {
+
+		}
+		JSONObject save = new JSONObject(fileText);
+		bot.soldiers = save.getInt("soldiers");
+		bot.capes = save.getInt("capes");
+		bot.death = save.getInt("death");
+		bot.bonks = save.getInt("bonks");
+		bot.orbsgot = save.getInt("orbsgot");
+		bot.orbsfailed = save.getInt("orbsfailed");
+		bot.greetings = save.getBoolean("greetings");
+		bot.streamerName = save.getString("streamername");
+		bot.advertisement = save.getString("advertisement");
+		bot.greeting = save.getString("greeting");
+
+		return bot;
+	}
+
+	public static boolean saveAllSettings(String channel, CyberMorphy bot) {
+		JSONObject save = new JSONObject();
+		save.put("soldiers", bot.soldiers);
+		save.put("capes", bot.capes);
+		save.put("death", bot.death);
+		save.put("bonks", bot.bonks);
+		save.put("orbsgot", bot.orbsgot);
+		save.put("orbsfailed", bot.orbsfailed);
+		save.put("greetings", bot.greetings);
+		save.put("streamername", bot.streamerName);
+		save.put("advertisement", bot.advertisement);
+		save.put("greeting", bot.greeting);
+		String path = System.getProperty("user.dir") + "/settings/" + channel + "/";
+		File file = new File(path + "settings.json");
+		String content = save.toString();
+		try {
+			if (!file.exists()) {
+				new File(path).mkdirs();
+				file.createNewFile();
+			}
+			FileOutputStream fop = new FileOutputStream(file);
+			byte[] contentInBytes = content.getBytes();
+			fop.write(contentInBytes);
+			fop.flush();
+			fop.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		System.out.println("Done");
+
+		return true;
 	}
 
 	public static String getPB(String category, String name) {
