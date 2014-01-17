@@ -187,12 +187,13 @@ public class HELPER {
 		save.put("advertisement", bot.advertisement);
 		save.put("greeting", bot.greeting);
 		save.put("welcomeback", bot.welcomeBack);
-		String path = System.getProperty("user.dir") + "/settings/" + channel + "/";
-		File file = new File(path + "settings.json");
+		String path = System.getProperty("user.dir") + "/settings/" + channel.substring(1) +"/";
+		File file = new File(path, "settings.json");
 		String content = save.toString();
 		try {
 			if (!file.exists()) {
 				new File(path).mkdirs();
+				System.out.println(file.getAbsolutePath());
 				file.createNewFile();
 			}
 			FileOutputStream fop = new FileOutputStream(file);
@@ -232,7 +233,7 @@ public class HELPER {
 	}
 
 	public static boolean newViewer(String channel, String viewer) {
-		String path = System.getProperty("user.dir") + "/settings/" + channel + "/";
+		String path = System.getProperty("user.dir") + "/settings/" + channel.substring(1) + "/";
 		File file = new File(path + "viewers.txt");
 		try {
 			if (!file.exists()) {
