@@ -1,12 +1,20 @@
 package de.morphyum.cybermorphy;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Random;
+import java.util.Scanner;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -18,7 +26,6 @@ import javax.mail.internet.MimeMessage;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.pircbotx.hooks.events.MessageEvent;
 
 public class HELPER {
 	public static String getYoutube(String link) {
@@ -65,8 +72,8 @@ public class HELPER {
 		for (int i = 0; i < jsonarray.length(); i++) {
 			if (jsonarray.getJSONObject(i).getString("name").equalsIgnoreCase(name)) {
 
-				standings = name + " is currently ranked " + "#" + jsonarray.getJSONObject(i).getInt("rank") + " with "
-						+ jsonarray.getJSONObject(i).getInt("trueskill") + " Points";
+				standings = name + " is currently ranked " + "#" + jsonarray.getJSONObject(i).getInt("rank") + " with " + jsonarray.getJSONObject(i).getInt("trueskill")
+						+ " Points";
 				match = true;
 			}
 		}
@@ -140,6 +147,112 @@ public class HELPER {
 		return "Error";
 	}
 
+	public static CyberMorphy loadSettings(String channel, CyberMorphy bot) {
+		String path = System.getProperty("user.dir") + "/settings/" + channel;
+		String fileText = null;
+		try {
+			Scanner scanner = new Scanner(new File(path + "/settings.json"));
+			scanner.useDelimiter("\\A");
+			fileText = scanner.next();
+			scanner.close();
+			JSONObject save = new JSONObject(fileText);
+			bot.soldiers = save.getInt("soldiers");
+			bot.capes = save.getInt("capes");
+			bot.death = save.getInt("death");
+			bot.bonks = save.getInt("bonks");
+			bot.orbsgot = save.getInt("orbsgot");
+			bot.orbsfailed = save.getInt("orbsfailed");
+			bot.greetings = save.getBoolean("greetings");
+			bot.streamerName = save.getString("streamername");
+			bot.advertisement = save.getString("advertisement");
+			bot.greeting = save.getString("greeting");
+			bot.welcomeBack = save.getString("welcomeback");
+		} catch (FileNotFoundException e) {
+			System.out.println("No Settings found for: " + channel);
+		}
+		bot.viewers = readViewers(channel);
+		return bot;
+	}
+
+	public static boolean saveAllSettings(String channel, CyberMorphy bot) {
+		JSONObject save = new JSONObject();
+		save.put("soldiers", bot.soldiers);
+		save.put("capes", bot.capes);
+		save.put("death", bot.death);
+		save.put("bonks", bot.bonks);
+		save.put("orbsgot", bot.orbsgot);
+		save.put("orbsfailed", bot.orbsfailed);
+		save.put("greetings", bot.greetings);
+		save.put("streamername", bot.streamerName);
+		save.put("advertisement", bot.advertisement);
+		save.put("greeting", bot.greeting);
+		save.put("welcomeback", bot.welcomeBack);
+		String path = System.getProperty("user.dir") + "/settings/" + channel.substring(1) +"/";
+		File file = new File(path, "settings.json");
+		String content = save.toString();
+		try {
+			if (!file.exists()) {
+				new File(path).mkdirs();
+				System.out.println(file.getAbsolutePath());
+				file.createNewFile();
+			}
+			FileOutputStream fop = new FileOutputStream(file);
+			byte[] contentInBytes = content.getBytes();
+			fop.write(contentInBytes);
+			fop.flush();
+			fop.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return true;
+	}
+
+	private static ArrayList<String> readViewers(String channel) {
+		String path = System.getProperty("user.dir") + "/settings/" + channel + "/";
+		ArrayList<String> viewers = new ArrayList<String>();
+		try {
+			File file = new File(path + "viewers.txt");
+			BufferedReader br = new BufferedReader(new FileReader(file));
+			String line;
+			while ((line = br.readLine()) != null) {
+				viewers.add(line);
+			}
+			br.close();
+		} catch (FileNotFoundException e) {
+			System.out.println("No Viewers found for: " + channel);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return viewers;
+	}
+
+	public static boolean newViewer(String channel, String viewer) {
+		String path = System.getProperty("user.dir") + "/settings/" + channel.substring(1) + "/";
+		File file = new File(path + "viewers.txt");
+		try {
+			if (!file.exists()) {
+				new File(path).mkdirs();
+				file.createNewFile();
+			}
+			BufferedWriter bw = new BufferedWriter(new FileWriter(file, true));
+			bw.write(viewer);
+			bw.newLine();
+			bw.flush();
+			bw.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return true;
+	}
+
 	public static String getPB(String category, String name) {
 
 		name = name.toLowerCase();
@@ -170,8 +283,8 @@ public class HELPER {
 
 						if (pbhelp[1].replace("</a", "").trim().toLowerCase().contentEquals(name)) {
 							playerfound = true;
-							return (pbhelp[1].replace("</a", "").trim() + " is currently ranked #" + ranking + " on the " + category
-									+ " Leaderboard with a time of " + pbtext[i + 1].replace("</td>", "").trim());
+							return (pbhelp[1].replace("</a", "").trim() + " is currently ranked #" + ranking + " on the " + category + " Leaderboard with a time of " + pbtext[i + 1]
+									.replace("</td>", "").trim());
 						}
 					}
 
