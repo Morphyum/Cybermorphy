@@ -147,7 +147,7 @@ public class HELPER {
 		return "Error";
 	}
 
-	private static ArrayList<String> readChannels() {
+	public static ArrayList<String> readChannels() {
 		String path = System.getProperty("user.dir") + "/settings/";
 		ArrayList<String> channels = new ArrayList<String>();
 		try {
@@ -165,6 +165,39 @@ public class HELPER {
 			e.printStackTrace();
 		}
 		return channels;
+	}
+
+	public static boolean deleteChannel(String channel) {
+		ArrayList<String> channels = readChannels();
+		boolean found = false;
+		for (int i = 0; i < channels.size(); i++) {
+			if (channels.get(i).contentEquals(channel)) {
+				channels.remove(i);
+				found = true;
+				break;
+			}
+		}
+		if (found) {
+			String path = System.getProperty("user.dir") + "/settings/";
+			File file = new File(path + "channels.txt");
+			try {
+				if (file.exists()) {
+					file.delete();
+					file.createNewFile();
+				}
+				BufferedWriter bw = new BufferedWriter(new FileWriter(file, true));
+				for (int i = 0; i < channels.size(); i++) {
+					bw.write(channel);
+					bw.newLine();
+					bw.flush();
+				}
+				bw.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return true;
 	}
 
 	public static boolean newChannel(String channel) {

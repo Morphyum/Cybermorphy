@@ -13,14 +13,14 @@ public class Main {
 
 	public static void main(String[] args) throws Exception {
 		SysTray tray = new SysTray();
-		String[] channels = { "morphyum" };
-//,"cybermorphy" , "dethwing", "artegaomega", "truman", "xpaco5", "mimiheart9", "rush60002"
-		for (int i = 0; i < channels.length; i++) {
-			if (isChannelWithoutCyber(channels[i]))
-				bots.add(newBot(channels[i]));
+		ArrayList<String> channels = HELPER.readChannels();
+// "morphyum" ,"cybermorphy" , "dethwing", "artegaomega", "truman", "xpaco5", "mimiheart9", "rush60002"
+		for (int i = 0; i < channels.size(); i++) {
+			if (isChannelWithoutCyber(channels.get(i)))
+				bots.add(newBot(channels.get(i)));
 		}
 
-		//bots.add(srlIrcBot());
+		bots.add(srlIrcBot());
 	}
 
 	public static void announce(String message) throws InterruptedException {
@@ -88,6 +88,7 @@ public class Main {
 
 			bot.joinChannel("#" + channel);
 			Thread.sleep(1000);
+			HELPER.newChannel(channel);
 		} catch (NickAlreadyInUseException e) {
 			System.out.println("cybermorphy already used in: " + channel);
 		} catch (IOException e) {
