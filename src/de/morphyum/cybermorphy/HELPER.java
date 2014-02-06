@@ -412,4 +412,17 @@ public class HELPER {
 			throw new RuntimeException(e);
 		}
 	}
+
+	public static String getOsuStats(String osuName) {
+
+		String stats = getHTML("https://osu.ppy.sh/api/get_user?k=61fbda7cf146a604a7eb3629c0f52fcfc10a7d7b&u=" + osuName);
+		// JSONArray jarray = new JSONArray(stats);
+		// JSONObject jobject = new JSONObject(jarray.getJSONObject(0));
+		JSONObject jobject = new JSONObject(stats);
+
+		return osuName + "'s stats are Playcount: " + jobject.getString("playcount") + " Ranked Score: " + jobject.getString("ranked_score") + " Rank: "
+				+ jobject.getString("pp_rank") + " Level: " + jobject.getString("level") + " PP Points: " + jobject.getString("pp_raw") + " Accuracy: "
+				+ jobject.getString("accuracy");
+
+	}
 }
