@@ -19,7 +19,6 @@ public class Main {
 			if (isChannelWithoutCyber(channels[i]))
 				bots.add(newBot(channels[i]));
 		}
-
 		bots.add(srlIrcBot());
 	}
 
@@ -88,6 +87,7 @@ public class Main {
 
 			bot.joinChannel("#" + channel);
 			Thread.sleep(1000);
+			HELPER.newChannel(channel);
 		} catch (NickAlreadyInUseException e) {
 			System.out.println("cybermorphy already used in: " + channel);
 		} catch (IOException e) {

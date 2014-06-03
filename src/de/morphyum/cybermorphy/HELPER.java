@@ -147,6 +147,89 @@ public class HELPER {
 		return "Error";
 	}
 
+	public static ArrayList<String> readChannels() {
+		String path = System.getProperty("user.dir") + "/settings/";
+		ArrayList<String> channels = new ArrayList<String>();
+		try {
+			File file = new File(path + "channels.txt");
+			BufferedReader br = new BufferedReader(new FileReader(file));
+			String line;
+			while ((line = br.readLine()) != null) {
+				channels.add(line);
+			}
+			br.close();
+		} catch (FileNotFoundException e) {
+			System.out.println("No channels found");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return channels;
+	}
+
+	public static boolean deleteChannel(String channel) {
+		ArrayList<String> channels = readChannels();
+		boolean found = false;
+		for (int i = 0; i < channels.size(); i++) {
+			if (channels.get(i).contentEquals(channel)) {
+				channels.remove(i);
+				found = true;
+				break;
+			}
+		}
+		if (found) {
+			String path = System.getProperty("user.dir") + "/settings/";
+			File file = new File(path + "channels.txt");
+			try {
+				if (file.exists()) {
+					file.delete();
+					file.createNewFile();
+				}
+				BufferedWriter bw = new BufferedWriter(new FileWriter(file, true));
+				for (int i = 0; i < channels.size(); i++) {
+					bw.write(channel);
+					bw.newLine();
+					bw.flush();
+				}
+				bw.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return true;
+	}
+
+	public static boolean newChannel(String channel) {
+		ArrayList<String> channels = readChannels();
+		boolean found = false;
+		for (int i = 0; i < channels.size(); i++) {
+			if (channels.get(i).contentEquals(channel)) {
+				found = true;
+				break;
+			}
+		}
+		if (!found) {
+			String path = System.getProperty("user.dir") + "/settings/";
+			File file = new File(path + "channels.txt");
+			try {
+				if (!file.exists()) {
+					new File(path).mkdirs();
+					file.createNewFile();
+				}
+				BufferedWriter bw = new BufferedWriter(new FileWriter(file, true));
+				bw.write(channel);
+				bw.newLine();
+				bw.flush();
+				bw.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return true;
+	}
+
 	public static CyberMorphy loadSettings(String channel, CyberMorphy bot) {
 		String path = System.getProperty("user.dir") + "/settings/" + channel;
 		String fileText = null;
@@ -187,7 +270,7 @@ public class HELPER {
 		save.put("advertisement", bot.advertisement);
 		save.put("greeting", bot.greeting);
 		save.put("welcomeback", bot.welcomeBack);
-		String path = System.getProperty("user.dir") + "/settings/" + channel.substring(1) +"/";
+		String path = System.getProperty("user.dir") + "/settings/" + channel.substring(1) + "/";
 		File file = new File(path, "settings.json");
 		String content = save.toString();
 		try {
@@ -328,5 +411,18 @@ public class HELPER {
 		} catch (MessagingException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	public static String getOsuStats(String osuName) {
+
+		String stats = getHTML("https://osu.ppy.sh/api/get_user?k=61fbda7cf146a604a7eb3629c0f52fcfc10a7d7b&u=" + osuName);
+		// JSONArray jarray = new JSONArray(stats);
+		// JSONObject jobject = new JSONObject(jarray.getJSONObject(0));
+		JSONObject jobject = new JSONObject(stats);
+
+		return osuName + "'s stats are Playcount: " + jobject.getString("playcount") + " Ranked Score: " + jobject.getString("ranked_score") + " Rank: "
+				+ jobject.getString("pp_rank") + " Level: " + jobject.getString("level") + " PP Points: " + jobject.getString("pp_raw") + " Accuracy: "
+				+ jobject.getString("accuracy");
+
 	}
 }
