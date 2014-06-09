@@ -13,11 +13,11 @@ public class Main {
 
 	public static void main(String[] args) throws Exception {
 		SysTray tray = new SysTray();
-		String[] channels = { "morphyum", "cybermorphy", "dethwing", "artegaomega", "truman", "xpaco5", "mimiheart9", "rush60002" };
+		ArrayList<String> channels = HELPER.readChannels();
 
-		for (int i = 0; i < channels.length; i++) {
-			if (isChannelWithoutCyber(channels[i]))
-				bots.add(newBot(channels[i]));
+		for (int i = 0; i < channels.size(); i++) {
+			if (isChannelWithoutCyber(channels.get(i)))
+				bots.add(newBot(channels.get(i)));
 		}
 		bots.add(srlIrcBot());
 	}
