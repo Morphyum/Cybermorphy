@@ -136,8 +136,11 @@ public class HELPER {
 				wikitext = jsonobject.getString("*");
 				String[] wrtime = wikitext.split("<td>");
 				String[] wrname = wrtime[1].split(">");
-
-				return ("The World Record for " + category + " is " + wrtime[2].replace("</td>", "").trim() + " by " + wrname[1].replace("</a", "").trim());
+				String wrvideo = "";
+				if (wrtime[3].contains("<a href>")) {
+					wrvideo = wrtime[3].replace("<a href=\"", "").replace("\" class=\"external autonumber\" rel=\"nofollow\">[1]</a> </td>", "");
+				}
+				return ("The World Record for " + category + " is " + wrtime[2].replace("</td>", "").trim() + " by " + wrname[1].replace("</a", "").trim() + " " + wrvideo);
 			}
 		}
 		if (!catfound) {
