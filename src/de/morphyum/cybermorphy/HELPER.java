@@ -246,8 +246,8 @@ public class HELPER {
 			bot.capes = save.getInt("capes");
 			bot.death = save.getInt("death");
 			bot.bonks = save.getInt("bonks");
-			bot.orbsgot = save.getInt("orbsgot");
-			bot.orbsfailed = save.getInt("orbsfailed");
+			bot.cloudsgot = save.getInt("orbsgot");
+			bot.cloudsfailed = save.getInt("orbsfailed");
 			bot.greetings = save.getBoolean("greetings");
 			bot.streamerName = save.getString("streamername");
 			bot.advertisement = save.getString("advertisement");
@@ -266,8 +266,8 @@ public class HELPER {
 		save.put("capes", bot.capes);
 		save.put("death", bot.death);
 		save.put("bonks", bot.bonks);
-		save.put("orbsgot", bot.orbsgot);
-		save.put("orbsfailed", bot.orbsfailed);
+		save.put("orbsgot", bot.cloudsgot);
+		save.put("orbsfailed", bot.cloudsfailed);
 		save.put("greetings", bot.greetings);
 		save.put("streamername", bot.streamerName);
 		save.put("advertisement", bot.advertisement);
