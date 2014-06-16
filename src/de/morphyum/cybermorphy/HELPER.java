@@ -137,7 +137,7 @@ public class HELPER {
 				String[] wrtime = wikitext.split("<td>");
 				String[] wrname = wrtime[1].split(">");
 				String wrvideo = "";
-				if (wrtime[3].contains("<a href>")) {
+				if (wrtime[3].contains("<a href")) {
 					wrvideo = wrtime[3].replace("<a href=\"", "").replace("\" class=\"external autonumber\" rel=\"nofollow\">[1]</a> </td>", "");
 				}
 				return ("The World Record for " + category + " is " + wrtime[2].replace("</td>", "").trim() + " by " + wrname[1].replace("</a", "").trim() + " " + wrvideo);
@@ -367,7 +367,7 @@ public class HELPER {
 						String[] pbhelp = pbtext[i].split(">");
 						ranking++;
 						String pbvideo = "";
-						if (pbtext[i + 2].contains("<a href>")) {
+						if (pbtext[i + 2].contains("<a href")) {
 							pbvideo = pbtext[i + 2].replace("<a href=\"", "").replace("\" class=\"external autonumber\" rel=\"nofollow\">[1]</a> </td>", "");
 						}
 						if (pbhelp[1].replace("</a", "").trim().toLowerCase().contentEquals(name)) {
