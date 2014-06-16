@@ -366,11 +366,14 @@ public class HELPER {
 					if (pbtext[i].contains("title")) {
 						String[] pbhelp = pbtext[i].split(">");
 						ranking++;
-
+						String pbvideo = "";
+						if (pbtext[i + 2].contains("<a href>")) {
+							pbvideo = pbtext[i + 2].replace("<a href=\"", "").replace("\" class=\"external autonumber\" rel=\"nofollow\">[1]</a> </td>", "");
+						}
 						if (pbhelp[1].replace("</a", "").trim().toLowerCase().contentEquals(name)) {
 							playerfound = true;
 							return (pbhelp[1].replace("</a", "").trim() + " is currently ranked #" + ranking + " on the " + category + " Leaderboard with a time of " + pbtext[i + 1]
-									.replace("</td>", "").trim());
+									.replace("</td>", "").trim() + " " + pbvideo) ;
 						}
 					}
 
