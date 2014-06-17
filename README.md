@@ -4,6 +4,8 @@ Cybermorphy
 Cybermorphy is an irc bot, that was originally developt to help me and fellow SMW Runner in providing informations to the viewers. Till then he has gone a long way and became more than that. Today he can do said things but is also a fun fellow to have in your chat.
 
 #PUBLIC COMMANDS  
+
+- _  
 !advertise  
 - Posts advertisement message.  
 !anna  
