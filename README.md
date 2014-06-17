@@ -70,6 +70,7 @@ Cybermorphy is an irc bot, that was originally developt to help me and fellow SM
 - Gives you the World Record for the specific SMW category.  
 
 #MOD ONLY  
+- _  
 !advertise set [MESSAGE]  
 - Sets the advertisement message.  
 !bonk [reset/+/-]  
