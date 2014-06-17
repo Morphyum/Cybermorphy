@@ -100,6 +100,8 @@ Cybermorphy is an irc bot, that was originally developt to help me and fellow SM
 !soldiers [reset/+/-]  
 - Shows and alters the number of soldiers lost in this run.  
 
+#Changelog
+
 3.6.1 - Fixed Videolinks  
 3.6 - Added Videolink for PB  
 3.5.2 - Changed Orbcounter to cloudcounter  
