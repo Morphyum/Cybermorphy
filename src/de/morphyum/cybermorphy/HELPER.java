@@ -25,6 +25,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class HELPER {
@@ -174,7 +175,7 @@ public class HELPER {
 		ArrayList<String> channels = readChannels();
 		boolean found = false;
 		for (int i = 0; i < channels.size(); i++) {
-			if (channels.get(i).contentEquals(channel)) {
+			if (channels.get(i).equalsIgnoreCase(channel)) {
 				channels.remove(i);
 				found = true;
 				break;
@@ -253,8 +254,11 @@ public class HELPER {
 			bot.advertisement = save.getString("advertisement");
 			bot.greeting = save.getString("greeting");
 			bot.welcomeBack = save.getString("welcomeback");
+			bot.mhroom = save.getString("mhroom");
 		} catch (FileNotFoundException e) {
 			System.out.println("No Settings found for: " + channel);
+		} catch (JSONException e){
+			System.out.println("Missing JSON value for: " + channel);
 		}
 		bot.viewers = readViewers(channel);
 		return bot;
@@ -273,6 +277,7 @@ public class HELPER {
 		save.put("advertisement", bot.advertisement);
 		save.put("greeting", bot.greeting);
 		save.put("welcomeback", bot.welcomeBack);
+		save.put("mhroom", bot.mhroom);
 		String path = System.getProperty("user.dir") + "/settings/" + channel.substring(1) + "/";
 		File file = new File(path, "settings.json");
 		String content = save.toString();
