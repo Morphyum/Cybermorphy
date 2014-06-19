@@ -19,7 +19,7 @@ public class Main {
 			if (isChannelWithoutCyber(channels.get(i)))
 				bots.add(newBot(channels.get(i)));
 		}
-		bots.add(srlIrcBot());
+		//bots.add(srlIrcBot());
 	}
 
 	public static void announce(String message) throws InterruptedException {
@@ -84,7 +84,6 @@ public class Main {
 		try {
 			bot.connect("irc.twitch.tv", 6667, "oauth:fbjpmnege3g0aw4ffv802rgkle1q9vo");
 			Thread.sleep(1000);
-
 			bot.joinChannel("#" + channel);
 			Thread.sleep(1000);
 			HELPER.newChannel(channel);

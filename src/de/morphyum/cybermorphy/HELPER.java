@@ -373,7 +373,7 @@ public class HELPER {
 						ranking++;
 						String pbvideo = "";
 						if (pbtext[i + 2].contains("<a href")) {
-							pbvideo = pbtext[i + 2].replace("<a href=\"", "").replace("\" class=\"external autonumber\" rel=\"nofollow\">[1]</a> </td>", "");
+							pbvideo = pbtext[i + 2].replace("<a href=\"", "").replace("\" class=\"external autonumber\" rel=\"nofollow\">","").replaceAll("\\[(\\d*)\\]", "").replace("</a> </td>", "");
 						}
 						if (pbhelp[1].replace("</a", "").trim().toLowerCase().contentEquals(name)) {
 							playerfound = true;
