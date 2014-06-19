@@ -13,14 +13,12 @@ public class Main {
 
 	public static void main(String[] args) throws Exception {
 		SysTray tray = new SysTray();
-		ArrayList<String> channels = new ArrayList<String>();
-		channels.add("cybermorphy");
-		//HELPER.readChannels();
+		ArrayList<String> channels = HELPER.readChannels();
 		for (int i = 0; i < channels.size(); i++) {
 			if (isChannelWithoutCyber(channels.get(i)))
 				bots.add(newBot(channels.get(i)));
 		}
-		//bots.add(srlIrcBot());
+		bots.add(srlIrcBot());
 	}
 
 	public static void announce(String message) throws InterruptedException {
