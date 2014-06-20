@@ -197,7 +197,7 @@ public class HELPER {
 					bw.newLine();
 					bw.flush();
 				}
-				
+
 				bw.close();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -260,10 +260,11 @@ public class HELPER {
 			bot.mhroom = save.getString("mhroom");
 		} catch (FileNotFoundException e) {
 			System.out.println("No Settings found for: " + channel);
-		} catch (JSONException e){
+		} catch (JSONException e) {
 			System.out.println("Missing JSON value for: " + channel);
 		}
 		bot.viewers = readViewers(channel);
+		bot.commands = readCommands(channel);
 		return bot;
 	}
 
@@ -376,12 +377,13 @@ public class HELPER {
 						ranking++;
 						String pbvideo = "";
 						if (pbtext[i + 2].contains("<a href")) {
-							pbvideo = pbtext[i + 2].replace("<a href=\"", "").replace("\" class=\"external autonumber\" rel=\"nofollow\">","").replaceAll("\\[(\\d*)\\]", "").replace("</a> </td>", "");
+							pbvideo = pbtext[i + 2].replace("<a href=\"", "").replace("\" class=\"external autonumber\" rel=\"nofollow\">", "").replaceAll("\\[(\\d*)\\]", "")
+									.replace("</a> </td>", "");
 						}
 						if (pbhelp[1].replace("</a", "").trim().toLowerCase().contentEquals(name)) {
 							playerfound = true;
-							return (pbhelp[1].replace("</a", "").trim() + " is currently ranked #" + ranking + " on the " + category + " Leaderboard with a time of " + pbtext[i + 1]
-									.replace("</td>", "").trim() + " " + pbvideo) ;
+							return (pbhelp[1].replace("</a", "").trim() + " is currently ranked #" + ranking + " on the " + category + " Leaderboard with a time of "
+									+ pbtext[i + 1].replace("</td>", "").trim() + " " + pbvideo);
 						}
 					}
 
@@ -438,5 +440,63 @@ public class HELPER {
 				+ jobject.getString("pp_rank") + " Level: " + jobject.getString("level") + " PP Points: " + jobject.getString("pp_raw") + " Accuracy: "
 				+ jobject.getString("accuracy");
 
+	}
+
+	public static Boolean addCommand(String command, String channel) {
+		String[] commandparts = command.split(" ");
+		ArrayList<Command> commands = readCommands(channel);
+		boolean found = false;
+		for (int i = 0; i < commands.size(); i++) {
+			if (commands.get(i).getHead().contentEquals(commandparts[0])) {
+				found = true;
+				break;
+			}
+		}
+		if (!found) {
+			String path = System.getProperty("user.dir") + "/settings/" + channel.substring(1) + "/";
+			File file = new File(path + "commands.txt");
+			try {
+				if (!file.exists()) {
+					new File(path).mkdirs();
+					file.createNewFile();
+				}
+				BufferedWriter bw = new BufferedWriter(new FileWriter(file, true));
+				bw.write(commandparts[0]);
+				bw.newLine();
+				for (int i = 1; i < commandparts.length; i++) {
+					bw.write(commandparts[i] + " ");
+				}
+				bw.newLine();
+				bw.flush();
+				bw.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return false;
+
+	}
+
+	public static ArrayList<Command> readCommands(String channel) {
+		String path = System.getProperty("user.dir") + "/settings/" + channel + "/";
+		ArrayList<Command> commands = new ArrayList<Command>();
+		try {
+			File file = new File(path + "commands.txt");
+			BufferedReader br = new BufferedReader(new FileReader(file));
+			String head;
+			int i = 0;
+			while ((head = br.readLine()) != null) {
+				String body = br.readLine();
+				commands.add(new Command(head, body));
+			}
+			br.close();
+		} catch (FileNotFoundException e) {
+			System.out.println("No Commands found for: " + channel);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return commands;
 	}
 }
