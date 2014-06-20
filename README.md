@@ -4,8 +4,7 @@ Cybermorphy
 Cybermorphy is an irc bot, that was originally developt to help me and fellow SMW Runner in providing informations to the viewers. Till then he has gone a long way and became more than that. Today he can do said things but is also a fun fellow to have in your chat.
 
 #PUBLIC COMMANDS  
-
-- _  
+- ________  
 !advertise  
 - Posts advertisement message.  
 !anna  
@@ -26,6 +25,8 @@ Cybermorphy is an irc bot, that was originally developt to help me and fellow SM
 - Cloud glitch explanation.  
 !cloudcount  
 - Tells u the orbstats for this run.  
+!dano  
+- Dano  
 !death  
 - Tells u how often the streamer died.  
 !door  
@@ -42,6 +43,8 @@ Cybermorphy is an irc bot, that was originally developt to help me and fellow SM
 - The king has been tranformed.  
 !leaderboard  
 - Link to the SMW leaderboard.  
+!mhroom  
+- returns the room we play Monster Hunter in.  
 !orb  
 - Explains the orb glitch!  
 !pb [CATEGORY] [NAME]  
@@ -60,8 +63,6 @@ Cybermorphy is an irc bot, that was originally developt to help me and fellow SM
 - Gives you the stats for NAME in the current SMW96Exit season on SRL.  
 !truman  
 - maple sitory.  
-!volpe  
-- Evil Volpe.  
 !wingdupe  
 - Explains duping and the Yoshiwings.  
 !yoshi  
@@ -70,7 +71,9 @@ Cybermorphy is an irc bot, that was originally developt to help me and fellow SM
 - Gives you the World Record for the specific SMW category.  
 
 #MOD ONLY  
-- _  
+- ________  
++![COMMAND] [TEXT]  
+- Creates a custom command, thats return the text specified  
 !advertise set [MESSAGE]  
 - Sets the advertisement message.  
 !bonk [reset/+/-]  
@@ -80,7 +83,7 @@ Cybermorphy is an irc bot, that was originally developt to help me and fellow SM
 !cloudfailed  
 - Raises the failed orbs count.  
 !cloudgot  
-- Raises the gotten orbs count.   +
+- Raises the gotten orbs count.  
 !cloudreset  
 - Resets the orb counter.   
 !death [reset/+/-]  
@@ -90,11 +93,13 @@ Cybermorphy is an irc bot, that was originally developt to help me and fellow SM
 !greet set [MESSAGE]  
 - sets the greetingmessage.  
 - use (NICK) as placeholder for the joining username.  
-!greet setwelcome [MESSAGE]  
+!greet welcome [MESSAGE]  
 - sets the welcomebackmessage.  
 - use (NICK) as placeholder for for the joining username.  
 !leave  
 - Sends CyberMorphy away.  
+!mhroom set  [TEXT]
+- Changes the room message.
 !request [MESSAGE]  
 - Send a request to improve cybermorphy.  
 !soldiers [reset/+/-]  
