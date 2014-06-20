@@ -102,6 +102,16 @@ Cybermorphy is an irc bot, that was originally developt to help me and fellow SM
 
 #Changelog
 
+3.9 - Added custom commands
+3.8.1 - Improved command recognition
+3.8 - Added !dano, deleted volpe command, changed truman command
+3.7.4 - Fixed leave command
+3.7.3 - Fixed Video links
+3.7.2 - Fixed !greet welcome
+3.7.1 - Fixed !cloud
+3.7 - Added mhroom command
+3.6.3 - Fixed set Welcome
+3.6.2 - Fixed spelling mistakes
 3.6.1 - Fixed Videolinks  
 3.6 - Added Videolink for PB  
 3.5.2 - Changed Orbcounter to cloudcounter  
