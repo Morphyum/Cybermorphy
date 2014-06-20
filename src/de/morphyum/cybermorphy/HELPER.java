@@ -173,31 +173,26 @@ public class HELPER {
 
 	public static boolean deleteChannel(String channel) {
 		channel = channel.substring(1);
-		System.out.println("Delete Start " + channel);
 		ArrayList<String> channels = readChannels();
 		boolean found = false;
 		for (int i = 0; i < channels.size(); i++) {
 			System.out.println(channels.get(i));
 			if (channels.get(i).equalsIgnoreCase(channel)) {
-				System.out.println("Found");
 				channels.remove(i);
 				found = true;
 				break;
 			}
 		}
 		if (found) {
-			System.out.println("If Start");
 			String path = System.getProperty("user.dir") + "/settings/";
 			File file = new File(path + "channels.txt");
 			try {
 				if (file.exists()) {
-					System.out.println("File Exists");
 					file.delete();
 					file.createNewFile();
 				}
 				BufferedWriter bw = new BufferedWriter(new FileWriter(file, true));
 				for (int i = 0; i < channels.size(); i++) {
-					System.out.println(channels.get(i));
 					bw.write(channels.get(i));
 					bw.newLine();
 					bw.flush();
