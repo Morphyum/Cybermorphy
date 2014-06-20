@@ -99,7 +99,7 @@ Cybermorphy is an irc bot, that was originally developt to help me and fellow SM
 !leave  
 - Sends CyberMorphy away.  
 !mhroom set  [TEXT]
-- Changes the room message.
+- Changes the room message.  
 !request [MESSAGE]  
 - Send a request to improve cybermorphy.  
 !soldiers [reset/+/-]  
