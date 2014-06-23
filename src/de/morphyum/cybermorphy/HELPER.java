@@ -499,4 +499,41 @@ public class HELPER {
 		}
 		return commands;
 	}
+
+	public static Boolean deleteCommand(String command, String channel) {
+		channel = channel.substring(1);
+		ArrayList<Command> commands = readCommands(channel);
+		boolean found = false;
+		for (int i = 0; i < commands.size(); i++) {
+			if (commands.get(i).getHead().equalsIgnoreCase(command)) {
+				commands.remove(i);
+				found = true;
+				break;
+			}
+		}
+		if (found) {
+			String path = System.getProperty("user.dir") + "/settings/" + channel +"/";
+			File file = new File(path + "commands.txt");
+			try {
+				if (file.exists()) {
+					file.delete();
+					file.createNewFile();
+				}
+				BufferedWriter bw = new BufferedWriter(new FileWriter(file, true));
+				for (int i = 0; i < commands.size(); i++) {
+					bw.write(commands.get(i).getHead());
+					bw.newLine();
+					bw.write(commands.get(i).getBody());
+					bw.flush();
+				}
+
+				bw.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return true;
+		
+	}
 }
