@@ -524,6 +524,7 @@ public class HELPER {
 					bw.write(commands.get(i).getHead());
 					bw.newLine();
 					bw.write(commands.get(i).getBody());
+					bw.newLine();
 					bw.flush();
 				}
 
