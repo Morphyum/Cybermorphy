@@ -265,6 +265,7 @@ public class HELPER {
 		}
 		bot.viewers = readViewers(channel);
 		bot.commands = readCommands(channel);
+		bot.modcommands = readModCommands(channel);
 		return bot;
 	}
 
@@ -478,6 +479,42 @@ public class HELPER {
 
 	}
 
+	public static Boolean addModCommand(String command, String channel) {
+		String[] commandparts = command.split(" ");
+		ArrayList<Command> modcommands = readModCommands(channel);
+		boolean found = false;
+		for (int i = 0; i < modcommands.size(); i++) {
+			if (modcommands.get(i).getHead().contentEquals(commandparts[0])) {
+				found = true;
+				break;
+			}
+		}
+		if (!found) {
+			String path = System.getProperty("user.dir") + "/settings/" + channel.substring(1) + "/";
+			File file = new File(path + "modcommands.txt");
+			try {
+				if (!file.exists()) {
+					new File(path).mkdirs();
+					file.createNewFile();
+				}
+				BufferedWriter bw = new BufferedWriter(new FileWriter(file, true));
+				bw.write(commandparts[0]);
+				bw.newLine();
+				for (int i = 1; i < commandparts.length; i++) {
+					bw.write(commandparts[i] + " ");
+				}
+				bw.newLine();
+				bw.flush();
+				bw.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return false;
+
+	}
+	
 	public static ArrayList<Command> readCommands(String channel) {
 		String path = System.getProperty("user.dir") + "/settings/" + channel + "/";
 		ArrayList<Command> commands = new ArrayList<Command>();
@@ -500,6 +537,28 @@ public class HELPER {
 		return commands;
 	}
 
+	public static ArrayList<Command> readModCommands(String channel) {
+		String path = System.getProperty("user.dir") + "/settings/" + channel + "/";
+		ArrayList<Command> modcommands = new ArrayList<Command>();
+		try {
+			File file = new File(path + "modcommands.txt");
+			BufferedReader br = new BufferedReader(new FileReader(file));
+			String head;
+			int i = 0;
+			while ((head = br.readLine()) != null) {
+				String body = br.readLine();
+				modcommands.add(new Command(head, body));
+			}
+			br.close();
+		} catch (FileNotFoundException e) {
+			System.out.println("No Mod Commands found for: " + channel);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return modcommands;
+	}
+	
 	public static Boolean deleteCommand(String command, String channel) {
 		channel = channel.substring(1);
 		ArrayList<Command> commands = readCommands(channel);
@@ -524,6 +583,43 @@ public class HELPER {
 					bw.write(commands.get(i).getHead());
 					bw.newLine();
 					bw.write(commands.get(i).getBody());
+					bw.newLine();
+					bw.flush();
+				}
+
+				bw.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return true;
+		
+	}
+	public static Boolean deleteModCommand(String command, String channel) {
+		channel = channel.substring(1);
+		ArrayList<Command> modcommands = readModCommands(channel);
+		boolean found = false;
+		for (int i = 0; i < modcommands.size(); i++) {
+			if (modcommands.get(i).getHead().equalsIgnoreCase(command)) {
+				modcommands.remove(i);
+				found = true;
+				break;
+			}
+		}
+		if (found) {
+			String path = System.getProperty("user.dir") + "/settings/" + channel +"/";
+			File file = new File(path + "modcommands.txt");
+			try {
+				if (file.exists()) {
+					file.delete();
+					file.createNewFile();
+				}
+				BufferedWriter bw = new BufferedWriter(new FileWriter(file, true));
+				for (int i = 0; i < modcommands.size(); i++) {
+					bw.write(modcommands.get(i).getHead());
+					bw.newLine();
+					bw.write(modcommands.get(i).getBody());
 					bw.newLine();
 					bw.flush();
 				}
