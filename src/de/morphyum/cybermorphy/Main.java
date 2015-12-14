@@ -81,8 +81,9 @@ public class Main {
 		bot.setAutoReconnect(true);
 		bot.setAutoReconnectChannels(true);
 		try {
-			bot.connect("irc.twitch.tv", 6667, "oauth:fbjpmnege3g0aw4ffv802rgkle1q9vo");
+			bot.connect("irc.twitch.tv", 6667, "oauth:mv0lnmnwn9ihqi0twkcavnrhk3tv38");
 			Thread.sleep(1000);
+			bot.sendRawLineNow("CAP REQ :twitch.tv/membership");
 			bot.joinChannel("#" + channel);
 			Thread.sleep(1000);
 			HELPER.newChannel(channel);
