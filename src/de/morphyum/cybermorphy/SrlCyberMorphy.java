@@ -12,23 +12,23 @@ public class SrlCyberMorphy extends ListenerAdapter {
 
 	public void onMessage(MessageEvent event) throws Exception {
 		if ((event.getMessage().toLowerCase()).contains("!leaderboard")) {
-			event.getBot().sendMessage(event.getChannel(), "You can find the SMW leaderboard here: http://deanyd.net/smw/index.php?title=Leaderboards");
+			event.getChannel().send().action( "You can find the SMW leaderboard here: http://deanyd.net/smw/index.php?title=Leaderboards");
 		}
 
 		else if ((event.getMessage().toLowerCase()).contains("!categories")) {
-			event.getBot().sendMessage(event.getChannel(), HELPER.showSMWCats());
+			event.getChannel().send().action( HELPER.showSMWCats());
 		}
 
 		else if (event.getMessage().equalsIgnoreCase("!smwwiki")) {
-			event.getBot().sendMessage(event.getChannel(), "http://www.smwwiki.com");
+			event.getChannel().send().action( "http://www.smwwiki.com");
 		}
 
 		else if ((event.getMessage().toLowerCase()).contains("!quote")) {
-			event.getBot().sendMessage(event.getChannel(), HELPER.randomQuote());
+			event.getChannel().send().action( HELPER.randomQuote());
 		}
 
 		else if ((event.getMessage().toLowerCase()).contains("!wr")) {
-			event.getBot().sendMessage(event.getChannel(), HELPER.getWR(event.getMessage().toLowerCase().substring(4)));
+			event.getChannel().send().action( HELPER.getWR(event.getMessage().toLowerCase().substring(4)));
 		}
 
 		else if ((event.getMessage().toLowerCase()).contains("http://www.youtube.com/watch?v=")
@@ -38,7 +38,7 @@ public class SrlCyberMorphy extends ListenerAdapter {
 			for (int i = 0; i < texte.length; i++) {
 				if (texte[i].toLowerCase().contains("http://www.youtube.com/watch?v=") || texte[i].toLowerCase().contains("https://www.youtube.com/watch?v=")) {
 					String link = texte[i];
-					event.getBot().sendMessage(event.getChannel(), HELPER.getYoutube(link));
+					event.getChannel().send().action( HELPER.getYoutube(link));
 				}
 			}
 		}
@@ -52,14 +52,14 @@ public class SrlCyberMorphy extends ListenerAdapter {
 				else
 					category = message[i];
 			}
-			event.getBot().sendMessage(event.getChannel(), HELPER.getPB(category, message[message.length - 1]));
+			event.getChannel().send().action( HELPER.getPB(category, message[message.length - 1]));
 
 		} else if (event.getMessage().toLowerCase().contains("!srlstandings")) {
 			if (event.getMessage().equalsIgnoreCase("!srlstandings")) {
-				event.getBot().sendMessage(event.getChannel(), HELPER.srlStandings());
-				event.getBot().sendMessage(event.getChannel(), "The Rest of the Leaderboard can be found here: http://speedrunslive.com/races/game/#!/smw/1");
+				event.getChannel().send().action( HELPER.srlStandings());
+				event.getChannel().send().action( "The Rest of the Leaderboard can be found here: http://speedrunslive.com/races/game/#!/smw/1");
 			} else {
-				event.getBot().sendMessage(event.getChannel(), HELPER.srlStandingsSearch(event.getMessage().toLowerCase().substring(14)));
+				event.getChannel().send().action( HELPER.srlStandingsSearch(event.getMessage().toLowerCase().substring(14)));
 			}
 		}
 
