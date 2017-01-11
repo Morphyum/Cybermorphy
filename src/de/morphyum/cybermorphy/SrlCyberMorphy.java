@@ -12,11 +12,11 @@ public class SrlCyberMorphy extends ListenerAdapter {
 
 	public void onMessage(MessageEvent event) throws Exception {
 		if ((event.getMessage().toLowerCase()).contains("!leaderboard")) {
-			event.getChannel().send().action( "You can find the SMW leaderboard here: http://deanyd.net/smw/index.php?title=Leaderboards");
+			event.getChannel().send().action("You can find the SMW leaderboard here: http://www.speedrun.com/smw");
 		}
 
 		else if ((event.getMessage().toLowerCase()).contains("!categories")) {
-			event.getChannel().send().action( HELPER.showSMWCats());
+			event.getChannel().send().action(HELPER.showCategories(event.getMessage().toLowerCase().substring(12)));
 		}
 
 		else if (event.getMessage().equalsIgnoreCase("!smwwiki")) {
@@ -28,7 +28,8 @@ public class SrlCyberMorphy extends ListenerAdapter {
 		}
 
 		else if ((event.getMessage().toLowerCase()).contains("!wr")) {
-			event.getChannel().send().action( HELPER.getWR(event.getMessage().toLowerCase().substring(4)));
+			String[] message = event.getMessage().toLowerCase().split(" ");
+			event.getChannel().send().action(HELPER.getWR(message[message.length - 2], message[message.length - 1]));
 		}
 
 		else if ((event.getMessage().toLowerCase()).contains("http://www.youtube.com/watch?v=")
@@ -45,14 +46,7 @@ public class SrlCyberMorphy extends ListenerAdapter {
 
 		else if ((event.getMessage().toLowerCase()).contains("!pb")) {
 			String[] message = event.getMessage().toLowerCase().split(" ");
-			String category = "";
-			for (int i = 1; i < message.length - 1; i++) {
-				if (i > 1)
-					category = category + " " + message[i];
-				else
-					category = message[i];
-			}
-			event.getChannel().send().action( HELPER.getPB(category, message[message.length - 1]));
+			event.getChannel().send().action(HELPER.getPB(message[message.length - 3], message[message.length - 2], message[message.length - 1]));
 
 		} else if (event.getMessage().toLowerCase().contains("!srlstandings")) {
 			if (event.getMessage().equalsIgnoreCase("!srlstandings")) {

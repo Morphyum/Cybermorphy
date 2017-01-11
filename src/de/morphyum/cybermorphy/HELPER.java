@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Random;
@@ -106,49 +107,32 @@ public class HELPER {
 		return result;
 	}
 
-	public static String showSMWCats() {
-		String categories = getHTML("http://www.deanyd.net/smw/api.php?action=parse&page=leaderboards&format=json&prop=sections");
+	public static String showCategories(String game) {
+		String categories = getHTML(" http://www.speedrun.com/api/v1/games/" + game + "/categories");
 		JSONObject jsonobject2 = new JSONObject(categories);
-		jsonobject2 = jsonobject2.getJSONObject(("parse"));
-		JSONArray sections = jsonobject2.getJSONArray("sections");
+		JSONArray sections = jsonobject2.getJSONArray("data");
 		String catList = "";
 		for (int h = 0; h < sections.length(); h++) {
-			catList += sections.getJSONObject(h).getString("line").toLowerCase() + " | ";
+			catList += sections.getJSONObject(h).getString("name").toLowerCase() + " | ";
 		}
 		return catList;
 	}
 
-	public static String getWR(String category) {
+	public static String getWR(String game, String category) {
 		category = category.toLowerCase();
+		String wrJson = getHTML("http://www.speedrun.com/api/v1/leaderboards/" + game + "/category/" + category + "?top=1");
+		JSONObject jsonobject = new JSONObject(wrJson);
+		String wrvideo = jsonobject.getJSONArray("links").getJSONObject(0).getString("uri");
+		jsonobject = jsonobject.getJSONObject("data");
+		jsonobject = jsonobject.getJSONArray("runs").getJSONObject(0);
+		Duration time = Duration.parse(jsonobject.getJSONObject("times").getString("primary"));
+		String runnerUri = jsonobject.getJSONObject("players").getString("uri");
+		String runnerPage = getHTML(runnerUri);
+		jsonobject = new JSONObject(runnerPage);
+		jsonobject = jsonobject.getJSONObject("data");
+		String name = jsonobject.getJSONObject("names").getString("international");
 
-		String categories = getHTML("http://www.deanyd.net/smw/api.php?action=parse&page=leaderboards&format=json&prop=sections");
-		JSONObject jsonobject2 = new JSONObject(categories);
-		jsonobject2 = jsonobject2.getJSONObject(("parse"));
-		JSONArray sections = jsonobject2.getJSONArray("sections");
-		boolean catfound = false;
-		for (int h = 0; h < sections.length(); h++) {
-			if (sections.getJSONObject(h).getString("line").toLowerCase().contentEquals(category)) {
-				catfound = true;
-				String section = sections.getJSONObject(h).getString("index");
-				String wikitext = getHTML("http://www.deanyd.net/smw/api.php?action=parse&page=leaderboards&format=json&section=" + section);
-				JSONObject jsonobject = new JSONObject(wikitext);
-				jsonobject = jsonobject.getJSONObject(("parse"));
-				jsonobject = jsonobject.getJSONObject(("text"));
-				wikitext = jsonobject.getString("*");
-				String[] wrtime = wikitext.split("<td>");
-				String[] wrname = wrtime[1].split(">");
-				String wrvideo = "";
-				if (wrtime[3].contains("<a href")) {
-					wrvideo = wrtime[3].replace("<a href=\"", "").replace("\" class=\"external autonumber\" rel=\"nofollow\">[1]</a> </td>", "");
-				}
-				return ("The World Record for " + category + " is " + wrtime[2].replace("</td>", "").trim() + " by " + wrname[1].replace("</a", "").trim() + " " + wrvideo);
-			}
-		}
-		if (!catfound) {
-			return ("Category " + category + " was not found");
-		}
-		catfound = false;
-		return "Error";
+		return ("The World Record for " + category + " in " + game + " is " + time.toString() + " by " + name + " " + wrvideo);
 	}
 
 	public static ArrayList<String> readChannels() {
@@ -349,57 +333,47 @@ public class HELPER {
 		return true;
 	}
 
-	public static String getPB(String category, String name) {
+	public static String getPB(String game, String category, String name) {
 
+		game = game.toLowerCase();
 		name = name.toLowerCase();
-
 		category = category.toLowerCase();
+		
+		String ranking = null;
+		String pbvideo = null;
+		Duration time = null;
 
-		String categories = getHTML("http://www.deanyd.net/smw/api.php?action=parse&page=leaderboards&format=json&prop=sections");
-		JSONObject jsonobject2 = new JSONObject(categories);
-		jsonobject2 = jsonobject2.getJSONObject(("parse"));
-		JSONArray sections = jsonobject2.getJSONArray("sections");
-		boolean catfound = false;
-		for (int h = 0; h < sections.length(); h++) {
-			if (sections.getJSONObject(h).getString("line").toLowerCase().contentEquals(category)) {
-				catfound = true;
-				String section = sections.getJSONObject(h).getString("index");
-				String wikitext = getHTML("http://www.deanyd.net/smw/api.php?action=parse&page=leaderboards&format=json&section=" + section);
-				JSONObject jsonobject = new JSONObject(wikitext);
-				jsonobject = jsonobject.getJSONObject(("parse"));
-				jsonobject = jsonobject.getJSONObject(("text"));
-				wikitext = jsonobject.getString("*");
-				String[] pbtext = wikitext.split("<td>");
-				int ranking = -1;
-				boolean playerfound = false;
-				for (int i = 0; i < pbtext.length; i++) {
-					if (pbtext[i].contains("title")) {
-						String[] pbhelp = pbtext[i].split(">");
-						ranking++;
-						String pbvideo = "";
-						if (pbtext[i + 2].contains("<a href")) {
-							pbvideo = pbtext[i + 2].replace("<a href=\"", "").replace("\" class=\"external autonumber\" rel=\"nofollow\">", "").replaceAll("\\[(\\d*)\\]", "")
-									.replace("</a> </td>", "");
-						}
-						if (pbhelp[1].replace("</a", "").trim().toLowerCase().contentEquals(name)) {
-							playerfound = true;
-							return (pbhelp[1].replace("</a", "").trim() + " is currently ranked #" + ranking + " on the " + category + " Leaderboard with a time of "
-									+ pbtext[i + 1].replace("</td>", "").trim() + " " + pbvideo);
-						}
-					}
+		String pbJson = getHTML("http://www.speedrun.com/api/v1/users/" + name + "/personal-bests");
+		JSONObject jsonobject2 = new JSONObject(pbJson);
+		JSONArray pbs = jsonobject2.getJSONArray("data");
 
-				}
-				if (!playerfound) {
-					return (name + " was not found on the leaderboard for the category " + category);
-				}
-				playerfound = false;
+		String gameJson = getHTML("http://www.speedrun.com/api/v1/games/" + game);
+		jsonobject2 = new JSONObject(gameJson);
+		String gameId = jsonobject2.getJSONObject("data").getString("id");
+
+		String categoryJson = getHTML("http://www.speedrun.com/api/v1/games/" + game + "/categories");
+		jsonobject2 = new JSONObject(categoryJson);
+		JSONArray categories = jsonobject2.getJSONArray("data");
+		String categoryId = null;
+		for(int i = 0; i < categories.length(); i++){
+			jsonobject2 = categories.getJSONObject(i);
+			if(jsonobject2.getString("name").replace(" ", "_").equalsIgnoreCase(category)){
+				categoryId = jsonobject2.getString("id");
 				break;
 			}
+			
 		}
-		if (!catfound) {
-			return ("Category " + category + " was not found");
+		
+		for (int i = 0; i < pbs.length(); i++) {
+			JSONObject run = pbs.getJSONObject(i);
+			if(run.getJSONObject("run").getString("game").equalsIgnoreCase(gameId) && run.getJSONObject("run").getString("category").equalsIgnoreCase(categoryId)){
+				ranking = run.getString("place");
+				time = Duration.parse(run.getJSONObject("times").getString("primary"));
+				pbvideo = run.getJSONObject("run").getJSONObject("videos").getJSONArray("links").getJSONObject(0).getString("uri");
+			}
 		}
-		return "Error";
+
+		return (name + " is currently ranked #" + ranking + " in " + game + " on the " + category + " Leaderboard with a time of " + time.toString() + " " + pbvideo);
 
 	}
 
@@ -514,7 +488,7 @@ public class HELPER {
 		return false;
 
 	}
-	
+
 	public static ArrayList<Command> readCommands(String channel) {
 		String path = System.getProperty("user.dir") + "/settings/" + channel + "/";
 		ArrayList<Command> commands = new ArrayList<Command>();
@@ -558,7 +532,7 @@ public class HELPER {
 		}
 		return modcommands;
 	}
-	
+
 	public static Boolean deleteCommand(String command, String channel) {
 		channel = channel.substring(1);
 		ArrayList<Command> commands = readCommands(channel);
@@ -571,7 +545,7 @@ public class HELPER {
 			}
 		}
 		if (found) {
-			String path = System.getProperty("user.dir") + "/settings/" + channel +"/";
+			String path = System.getProperty("user.dir") + "/settings/" + channel + "/";
 			File file = new File(path + "commands.txt");
 			try {
 				if (file.exists()) {
@@ -594,8 +568,9 @@ public class HELPER {
 			}
 		}
 		return true;
-		
+
 	}
+
 	public static Boolean deleteModCommand(String command, String channel) {
 		channel = channel.substring(1);
 		ArrayList<Command> modcommands = readModCommands(channel);
@@ -608,7 +583,7 @@ public class HELPER {
 			}
 		}
 		if (found) {
-			String path = System.getProperty("user.dir") + "/settings/" + channel +"/";
+			String path = System.getProperty("user.dir") + "/settings/" + channel + "/";
 			File file = new File(path + "modcommands.txt");
 			try {
 				if (file.exists()) {
@@ -631,6 +606,6 @@ public class HELPER {
 			}
 		}
 		return true;
-		
+
 	}
 }
