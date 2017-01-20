@@ -74,8 +74,8 @@ public class HELPER {
 		for (int i = 0; i < jsonarray.length(); i++) {
 			if (jsonarray.getJSONObject(i).getString("name").equalsIgnoreCase(name)) {
 
-				standings = name + " is currently ranked " + "#" + jsonarray.getJSONObject(i).getInt("rank") + " with " + jsonarray.getJSONObject(i).getInt("trueskill")
-						+ " Points";
+				standings = name + " is currently ranked " + "#" + jsonarray.getJSONObject(i).getInt("rank") + " with "
+						+ jsonarray.getJSONObject(i).getInt("trueskill") + " Points";
 				match = true;
 			}
 		}
@@ -113,21 +113,24 @@ public class HELPER {
 		JSONArray sections = jsonobject2.getJSONArray("data");
 		String catList = "";
 		for (int h = 0; h < sections.length(); h++) {
-			catList += sections.getJSONObject(h).getString("weblink").replace("http://www.speedrun.com/", "").replace(game+"#", "").toLowerCase() + " | ";
+			catList += sections.getJSONObject(h).getString("weblink").replace("http://www.speedrun.com/", "").replace(game + "#", "").toLowerCase() + " | ";
 		}
 		return catList;
 	}
 
 	public static String getWR(String game, String category) {
 		category = category.toLowerCase();
+		String wrvideo = "no video";
 		String wrJson = getHTML("http://www.speedrun.com/api/v1/leaderboards/" + game + "/category/" + category + "?top=1");
 		JSONObject jsonobject = new JSONObject(wrJson);
 		jsonobject = jsonobject.getJSONObject("data");
 		JSONArray runs = jsonobject.getJSONArray("runs");
 		JSONObject run = runs.getJSONObject(0).getJSONObject("run");
-		JSONObject videos = run.getJSONObject("videos");
-		JSONArray links = videos.getJSONArray("links");
-		String wrvideo = links.getJSONObject(0).getString("uri");
+		if (!run.isNull("videos")) {
+			JSONObject videos = run.getJSONObject("videos");
+			JSONArray links = videos.getJSONArray("links");
+			wrvideo = links.getJSONObject(0).getString("uri");
+		}
 		Duration time = Duration.parse(run.getJSONObject("times").getString("primary"));
 		String runnerUri = run.getJSONArray("players").getJSONObject(0).getString("uri");
 		String runnerPage = getHTML(runnerUri);
@@ -135,18 +138,14 @@ public class HELPER {
 		jsonobject = jsonobject.getJSONObject("data");
 		String name = jsonobject.getJSONObject("names").getString("international");
 
-		return ("The World Record for " + category + " in " + game + " is " + formatDuration(time) + " by " + name + " " + wrvideo);
+		return ("The World Record for the " +  game + " " + category + " category is " + formatDuration(time) + " by " + name + ", videolink: " + wrvideo);
 	}
-	
+
 	public static String formatDuration(Duration duration) {
-	    long seconds = duration.getSeconds();
-	    long absSeconds = Math.abs(seconds);
-	    String positive = String.format(
-	        "%d:%02d:%02d",
-	        absSeconds / 3600,
-	        (absSeconds % 3600) / 60,
-	        absSeconds % 60);
-	    return seconds < 0 ? "-" + positive : positive;
+		long seconds = duration.getSeconds();
+		long absSeconds = Math.abs(seconds);
+		String positive = String.format("%d:%02d:%02d", absSeconds / 3600, (absSeconds % 3600) / 60, absSeconds % 60);
+		return seconds < 0 ? "-" + positive : positive;
 	}
 
 	public static ArrayList<String> readChannels() {
@@ -349,12 +348,8 @@ public class HELPER {
 
 	public static String getPB(String game, String category, String name) {
 
-		game = game.toLowerCase();
-		name = name.toLowerCase();
-		category = category.toLowerCase();
-		
 		int ranking = 0;
-		String pbvideo = null;
+		String pbvideo = "no video";
 		Duration time = null;
 
 		String pbJson = getHTML("http://www.speedrun.com/api/v1/users/" + name + "/personal-bests");
@@ -369,25 +364,29 @@ public class HELPER {
 		jsonobject2 = new JSONObject(categoryJson);
 		JSONArray categories = jsonobject2.getJSONArray("data");
 		String categoryId = null;
-		for(int i = 0; i < categories.length(); i++){
+		for (int i = 0; i < categories.length(); i++) {
 			jsonobject2 = categories.getJSONObject(i);
-			if(jsonobject2.getString("name").replace(" ", "_").equalsIgnoreCase(category)){
+			if (jsonobject2.getString("weblink").replace("http://www.speedrun.com/", "").replace(game + "#", "").equalsIgnoreCase(category)){
 				categoryId = jsonobject2.getString("id");
 				break;
 			}
-			
+
 		}
-		
+
 		for (int i = 0; i < pbs.length(); i++) {
 			JSONObject run = pbs.getJSONObject(i);
-			if(run.getJSONObject("run").getString("game").equalsIgnoreCase(gameId) && run.getJSONObject("run").getString("category").equalsIgnoreCase(categoryId)){
+			if (run.getJSONObject("run").getString("game").equalsIgnoreCase(gameId)
+					&& run.getJSONObject("run").getString("category").equalsIgnoreCase(categoryId)) {
 				ranking = run.getInt("place");
 				time = Duration.parse(run.getJSONObject("run").getJSONObject("times").getString("primary"));
-				pbvideo = run.getJSONObject("run").getJSONObject("videos").getJSONArray("links").getJSONObject(0).getString("uri");
+				if (!run.getJSONObject("run").isNull("videos")) {
+					pbvideo = run.getJSONObject("run").getJSONObject("videos").getJSONArray("links").getJSONObject(0).getString("uri");
+				}
 			}
 		}
 
-		return (name + " is currently ranked #" + ranking + " in " + game + " on the " + category + " Leaderboard with a time of " + formatDuration(time) + " " + pbvideo);
+		return (name + " is currently ranked #" + ranking + ", on the " + game + " " + category + " Leaderboard with a time of " + formatDuration(time)
+				+ ", videolink: " + pbvideo);
 
 	}
 
