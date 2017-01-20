@@ -108,12 +108,12 @@ public class HELPER {
 	}
 
 	public static String showCategories(String game) {
-		String categories = getHTML(" http://www.speedrun.com/api/v1/games/" + game + "/categories");
+		String categories = getHTML("http://www.speedrun.com/api/v1/games/" + game + "/categories");
 		JSONObject jsonobject2 = new JSONObject(categories);
 		JSONArray sections = jsonobject2.getJSONArray("data");
 		String catList = "";
 		for (int h = 0; h < sections.length(); h++) {
-			catList += sections.getJSONObject(h).getString("name").toLowerCase() + " | ";
+			catList += sections.getJSONObject(h).getString("weblink").replace("http://www.speedrun.com/", "").replace(game+"#", "").toLowerCase() + " | ";
 		}
 		return catList;
 	}
@@ -122,17 +122,31 @@ public class HELPER {
 		category = category.toLowerCase();
 		String wrJson = getHTML("http://www.speedrun.com/api/v1/leaderboards/" + game + "/category/" + category + "?top=1");
 		JSONObject jsonobject = new JSONObject(wrJson);
-		String wrvideo = jsonobject.getJSONArray("links").getJSONObject(0).getString("uri");
 		jsonobject = jsonobject.getJSONObject("data");
-		jsonobject = jsonobject.getJSONArray("runs").getJSONObject(0);
-		Duration time = Duration.parse(jsonobject.getJSONObject("times").getString("primary"));
-		String runnerUri = jsonobject.getJSONObject("players").getString("uri");
+		JSONArray runs = jsonobject.getJSONArray("runs");
+		JSONObject run = runs.getJSONObject(0).getJSONObject("run");
+		JSONObject videos = run.getJSONObject("videos");
+		JSONArray links = videos.getJSONArray("links");
+		String wrvideo = links.getJSONObject(0).getString("uri");
+		Duration time = Duration.parse(run.getJSONObject("times").getString("primary"));
+		String runnerUri = run.getJSONArray("players").getJSONObject(0).getString("uri");
 		String runnerPage = getHTML(runnerUri);
 		jsonobject = new JSONObject(runnerPage);
 		jsonobject = jsonobject.getJSONObject("data");
 		String name = jsonobject.getJSONObject("names").getString("international");
 
-		return ("The World Record for " + category + " in " + game + " is " + time.toString() + " by " + name + " " + wrvideo);
+		return ("The World Record for " + category + " in " + game + " is " + formatDuration(time) + " by " + name + " " + wrvideo);
+	}
+	
+	public static String formatDuration(Duration duration) {
+	    long seconds = duration.getSeconds();
+	    long absSeconds = Math.abs(seconds);
+	    String positive = String.format(
+	        "%d:%02d:%02d",
+	        absSeconds / 3600,
+	        (absSeconds % 3600) / 60,
+	        absSeconds % 60);
+	    return seconds < 0 ? "-" + positive : positive;
 	}
 
 	public static ArrayList<String> readChannels() {
@@ -339,7 +353,7 @@ public class HELPER {
 		name = name.toLowerCase();
 		category = category.toLowerCase();
 		
-		String ranking = null;
+		int ranking = 0;
 		String pbvideo = null;
 		Duration time = null;
 
@@ -367,13 +381,13 @@ public class HELPER {
 		for (int i = 0; i < pbs.length(); i++) {
 			JSONObject run = pbs.getJSONObject(i);
 			if(run.getJSONObject("run").getString("game").equalsIgnoreCase(gameId) && run.getJSONObject("run").getString("category").equalsIgnoreCase(categoryId)){
-				ranking = run.getString("place");
-				time = Duration.parse(run.getJSONObject("times").getString("primary"));
+				ranking = run.getInt("place");
+				time = Duration.parse(run.getJSONObject("run").getJSONObject("times").getString("primary"));
 				pbvideo = run.getJSONObject("run").getJSONObject("videos").getJSONArray("links").getJSONObject(0).getString("uri");
 			}
 		}
 
-		return (name + " is currently ranked #" + ranking + " in " + game + " on the " + category + " Leaderboard with a time of " + time.toString() + " " + pbvideo);
+		return (name + " is currently ranked #" + ranking + " in " + game + " on the " + category + " Leaderboard with a time of " + formatDuration(time) + " " + pbvideo);
 
 	}
 

@@ -15,7 +15,7 @@ public class SrlCyberMorphy extends ListenerAdapter {
 			event.getChannel().send().action("You can find the SMW leaderboard here: http://www.speedrun.com/smw");
 		}
 
-		else if ((event.getMessage().toLowerCase()).contains("!categories")) {
+		else if ((event.getMessage().toLowerCase()).startsWith("!categories")) {
 			event.getChannel().send().action(HELPER.showCategories(event.getMessage().toLowerCase().substring(12)));
 		}
 
@@ -23,11 +23,11 @@ public class SrlCyberMorphy extends ListenerAdapter {
 			event.getChannel().send().action( "http://www.smwwiki.com");
 		}
 
-		else if ((event.getMessage().toLowerCase()).contains("!quote")) {
+		else if ((event.getMessage().toLowerCase()).startsWith("!quote")) {
 			event.getChannel().send().action( HELPER.randomQuote());
 		}
 
-		else if ((event.getMessage().toLowerCase()).contains("!wr")) {
+		else if ((event.getMessage().toLowerCase()).startsWith("!wr")) {
 			String[] message = event.getMessage().toLowerCase().split(" ");
 			event.getChannel().send().action(HELPER.getWR(message[message.length - 2], message[message.length - 1]));
 		}
@@ -44,11 +44,11 @@ public class SrlCyberMorphy extends ListenerAdapter {
 			}
 		}
 
-		else if ((event.getMessage().toLowerCase()).contains("!pb")) {
+		else if ((event.getMessage().toLowerCase()).startsWith("!pb")) {
 			String[] message = event.getMessage().toLowerCase().split(" ");
 			event.getChannel().send().action(HELPER.getPB(message[message.length - 3], message[message.length - 2], message[message.length - 1]));
 
-		} else if (event.getMessage().toLowerCase().contains("!srlstandings")) {
+		} else if (event.getMessage().toLowerCase().startsWith("!srlstandings")) {
 			if (event.getMessage().equalsIgnoreCase("!srlstandings")) {
 				event.getChannel().send().action( HELPER.srlStandings());
 				event.getChannel().send().action( "The Rest of the Leaderboard can be found here: http://speedrunslive.com/races/game/#!/smw/1");
