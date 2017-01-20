@@ -21,7 +21,6 @@ public class Main {
 			if (isChannelWithoutCyber(channels.get(i)))
 				bots.addBot(newBot(channels.get(i)));
 		}
-		bots.addBot(srlIrcBot());
 		bots.start();
 	}
 
@@ -36,24 +35,6 @@ public class Main {
 				Thread.sleep(3000);
 			}
 		}
-	}
-
-	public static PircBotX srlIrcBot() {
-		Configuration configuration = new Configuration.Builder()
-			    .setName("cybermorphy") //Set the nick of the bot. CHANGE IN YOUR CODE
-			    .addListener(new SrlCyberMorphy())
-			    .addServer("irc2.speedrunslive.com")
-			    .setAutoReconnect(true)
-			    .addAutoJoinChannel("#smwracers") 
-			    .buildConfiguration();
-			PircBotX bot = new PircBotX(configuration);
-
-		try {
-			bot.startBot();
-		} catch (Exception e) {
-			
-		}
-		return bot;
 	}
 
 	public static boolean isChannelWithoutCyber(String channel) {
