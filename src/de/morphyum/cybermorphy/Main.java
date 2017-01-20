@@ -16,15 +16,12 @@ public class Main {
 	
 	public static void main(String[] args) throws Exception {
 		SysTray tray = new SysTray();
-		ArrayList<String> channels = new ArrayList<String>();
-		channels.add("cybermorphy");
-		channels.add("morphyum");
-		// ArrayList<String> channels = HELPER.readChannels();
+		ArrayList<String> channels = HELPER.readChannels();
 		for (int i = 0; i < channels.size(); i++) {
 			if (isChannelWithoutCyber(channels.get(i)))
 				bots.addBot(newBot(channels.get(i)));
 		}
-		// bots.addBot(srlIrcBot());
+		bots.addBot(srlIrcBot());
 		bots.start();
 	}
 
