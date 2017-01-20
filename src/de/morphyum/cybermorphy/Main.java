@@ -5,28 +5,34 @@ import java.util.ArrayList;
 
 import org.pircbotx.Channel;
 import org.pircbotx.Configuration;
+import org.pircbotx.MultiBotManager;
 import org.pircbotx.PircBotX;
 import org.pircbotx.cap.EnableCapHandler;
 import org.pircbotx.exception.IrcException;
 
 public class Main {
-	static ArrayList<PircBotX> bots = new ArrayList<PircBotX>();
-
+	//static ArrayList<PircBotX> bots = new ArrayList<PircBotX>();
+	static MultiBotManager bots = new MultiBotManager();
+	
 	public static void main(String[] args) throws Exception {
 		SysTray tray = new SysTray();
-		ArrayList<String> channels = HELPER.readChannels();
+		ArrayList<String> channels = new ArrayList<String>();
+		channels.add("cybermorphy");
+		channels.add("morphyum");
+		// ArrayList<String> channels = HELPER.readChannels();
 		for (int i = 0; i < channels.size(); i++) {
 			if (isChannelWithoutCyber(channels.get(i)))
-				bots.add(newBot(channels.get(i)));
+				bots.addBot(newBot(channels.get(i)));
 		}
-		bots.add(srlIrcBot());
+		// bots.addBot(srlIrcBot());
+		bots.start();
 	}
 
 	public static void announce(String message) throws InterruptedException {
-		for (int i = 0; i < bots.size(); i++) {
+		for (PircBotX bot : bots.getBots()) {
 			ArrayList<Channel> channels = new ArrayList<Channel>();
-			for (int h = 0; h < bots.get(i).getUserChannelDao().getAllChannels().size(); h++) {
-				channels.add(bots.get(i).getUserChannelDao().getAllChannels().iterator().next());
+			for (int h = 0; h < bot.getUserChannelDao().getAllChannels().size(); h++) {
+				channels.add(bot.getUserChannelDao().getAllChannels().iterator().next());
 			}
 			for (int j = 0; j < channels.size(); j++) {
 				channels.get(j).send().action(message);
@@ -55,8 +61,8 @@ public class Main {
 
 	public static boolean isChannelWithoutCyber(String channel) {
 		boolean empty = true;
-		for (int i = 0; i < bots.size(); i++) {
-			if (bots.get(i).getUserChannelDao().containsChannel("#" + channel)) {
+		for (PircBotX bot : bots.getBots()) {
+			if (bot.getUserChannelDao().containsChannel("#" + channel)) {
 				empty = false;
 				System.out.println("Join error: Cyber already in: " + channel);
 				break;
@@ -83,13 +89,8 @@ public class Main {
 			PircBotX bot = new PircBotX(configuration);
 			
 		try {
-			bot.startBot();
 			Thread.sleep(1000);
 			HELPER.newChannel(channel);
-		} catch (IOException e) {
-			System.out.println("Connection to server failed for: " + channel);
-		} catch (IrcException e) {
-			e.printStackTrace();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
