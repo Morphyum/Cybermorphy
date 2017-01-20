@@ -16,7 +16,7 @@ public class Main {
 	
 	public static void main(String[] args) throws Exception {
 		SysTray tray = new SysTray();
-		ArrayList<String> channels = HELPER.readChannels();
+		ArrayList<String> channels = HELPER.readChannels();	
 		for (int i = 0; i < channels.size(); i++) {
 			if (isChannelWithoutCyber(channels.get(i)))
 				bots.addBot(newBot(channels.get(i)));
@@ -50,6 +50,8 @@ public class Main {
 	}
 
 	public static PircBotX newBot(String channel) {
+		CyberMorphy cyber = new CyberMorphy();
+		cyber = HELPER.loadSettings(channel, cyber);
 		
 		Configuration configuration = new Configuration.Builder()
 				.setAutoNickChange(false) //Twitch doesn't support multiple users
@@ -58,7 +60,7 @@ public class Main {
 			    .addCapHandler(new EnableCapHandler("twitch.tv/membership")) //Twitch by default doesn't send JOIN, PART, and NAMES unless you request it, see https://github.com/justintv/Twitch-API/blob/master/IRC.md#membership
 			    
 			    .setName("cybermorphy") //Set the nick of the bot. CHANGE IN YOUR CODE
-			    .addListener(new CyberMorphy())
+			    .addListener(cyber)
 			    .addServer("irc.twitch.tv")
 			    .setServerPassword("oauth:mv0lnmnwn9ihqi0twkcavnrhk3tv38")
 			    .setAutoReconnect(true)
