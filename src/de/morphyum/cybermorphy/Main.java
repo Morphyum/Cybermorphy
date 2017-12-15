@@ -1,6 +1,5 @@
 package de.morphyum.cybermorphy;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import org.pircbotx.Channel;
@@ -8,7 +7,6 @@ import org.pircbotx.Configuration;
 import org.pircbotx.MultiBotManager;
 import org.pircbotx.PircBotX;
 import org.pircbotx.cap.EnableCapHandler;
-import org.pircbotx.exception.IrcException;
 
 public class Main {
 	//static ArrayList<PircBotX> bots = new ArrayList<PircBotX>();
@@ -16,7 +14,9 @@ public class Main {
 	
 	public static void main(String[] args) throws Exception {
 		SysTray tray = new SysTray();
-		ArrayList<String> channels = HELPER.readChannels();	
+		ArrayList<String> channels =  new ArrayList<String>();
+		channels.add("morphyum");
+				//HELPER.readChannels();	
 		for (int i = 0; i < channels.size(); i++) {
 			if (isChannelWithoutCyber(channels.get(i)))
 				bots.addBot(newBot(channels.get(i)));

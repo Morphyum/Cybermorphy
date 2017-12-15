@@ -255,6 +255,7 @@ public class HELPER {
 			bot.greeting = save.getString("greeting");
 			bot.welcomeBack = save.getString("welcomeback");
 			bot.mhroom = save.getString("mhroom");
+			bot.period =save.getInt("period");
 		} catch (FileNotFoundException e) {
 			System.out.println("No Settings found for: " + channel);
 		} catch (JSONException e) {
@@ -280,6 +281,7 @@ public class HELPER {
 		save.put("greeting", bot.greeting);
 		save.put("welcomeback", bot.welcomeBack);
 		save.put("mhroom", bot.mhroom);
+		save.put("period", bot.period);
 		String path = System.getProperty("user.dir") + "/settings/" + channel.substring(1) + "/";
 		File file = new File(path, "settings.json");
 		String content = save.toString();
@@ -509,7 +511,6 @@ public class HELPER {
 			File file = new File(path + "commands.txt");
 			BufferedReader br = new BufferedReader(new FileReader(file));
 			String head;
-			int i = 0;
 			while ((head = br.readLine()) != null) {
 				String body = br.readLine();
 				commands.add(new Command(head, body));
@@ -531,7 +532,6 @@ public class HELPER {
 			File file = new File(path + "modcommands.txt");
 			BufferedReader br = new BufferedReader(new FileReader(file));
 			String head;
-			int i = 0;
 			while ((head = br.readLine()) != null) {
 				String body = br.readLine();
 				modcommands.add(new Command(head, body));

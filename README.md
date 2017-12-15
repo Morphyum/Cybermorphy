@@ -76,6 +76,8 @@ Cybermorphy is an irc bot, that was originally developt to help me and fellow SM
 - Creates a custom command, thats return the text specified  
 !advertise set [MESSAGE]  
 - Sets the advertisement message.  
+!advertise timer [MINUTES]  
+- Sets the timer of the advertisement message.  
 !bonk [reset/+/-]  
 - Shows and alters the number of bonks in this run.  
 !capes [reset/+/-]  
