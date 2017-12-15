@@ -78,6 +78,8 @@ Cybermorphy is an irc bot, that was originally developt to help me and fellow SM
 - Sets the advertisement message.  
 !advertise timer [MINUTES]  
 - Sets the timer of the advertisement message.  
+!advertise stop
+- stops the timer of the advertisement message.  
 !bonk [reset/+/-]  
 - Shows and alters the number of bonks in this run.  
 !capes [reset/+/-]  
